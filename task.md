@@ -1,0 +1,37 @@
+# Tasks - Premium Brand Website for Dharmi Shree
+
+- [x] Project Initialization & Setup
+  - [x] Initialize Next.js project with TypeScript, Tailwind CSS, App Router
+  - [x] Install framer-motion and lucide-react
+  - [x] Create `public/assets` directory for client's photos
+- [x] Theme Configuration
+  - [x] Configure `@theme` in `globals.css` (colors: Ivory, Charcoal, Antique Gold, Temple Bronze, Burgundy)
+  - [x] Add `Cormorant Garamond` and `Inter` fonts configuration in `layout.tsx`
+  - [x] Add base/paper-texture styles to `globals.css`
+- [x] Base Components Implementation
+  - [x] Implement `Header.tsx` (sticky, transparent-to-glass scroll animation)
+  - [x] Implement `Footer.tsx` (minimal, elegant, social links, quote)
+- [x] Page Sections Implementation
+  - [x] Hero Section (100vh, minimal copy, CTA, scroll indicator)
+  - [x] About Section (split layout, narrative, portrait space)
+  - [x] Philosophy Section ("Wisdom Beyond Prediction", custom typography)
+  - [x] Services Section (alternating editorial blocks for 5 services)
+  - [x] Wisdom Journal / Insights Section (featured articles with large imagery)
+  - [x] Testimonials Section (quote cards, video placeholder)
+  - [x] Journey Section (CTAs: Book, WhatsApp, Call)
+- [x] Project Optimization & Verification
+  - [x] Implement structured data schema (Spiritual Mentor/Vedic Guide)
+  - [x] Add metadata and Open Graph tags
+  - [x] Test builds (`npm run build`)
+  - [x] Perform walkthrough
+- [x] Prokerala API Integration (Authentic Data)
+  - [x] Create `.env.example` file
+  - [x] Create Next.js API route handler `src/app/api/prokerala/route.ts` with OAuth2 authentication
+  - [x] Integrate API calls and client location lookup in `src/app/tools/page.tsx`
+  - [x] Verify build compiles successfully
+- [x] Blog System Integration (3 PDF Blogs)
+  - [x] Create `src/data/blogs.ts` with content from the 3 uploaded PDF articles
+  - [x] Modify `src/app/page.tsx` to include the auto-scrolling horizontal blog carousel
+  - [x] Implement the blog list page at `src/app/blog/page.tsx`
+  - [x] Implement the dynamic details page at `src/app/blog/[slug]/page.tsx`
+  - [x] Verify clean compilation and layout responsiveness
