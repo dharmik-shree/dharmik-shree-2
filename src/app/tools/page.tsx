@@ -45,15 +45,24 @@ export default function ToolsPage() {
 
   // --- TOOL 1: Panchang Data ---
   const panchangData = {
-    tithi: "Shukla Dwadashi (till 04:32 PM, then Trayodashi)",
-    nakshatra: "Jyeshtha (till 06:14 PM, then Moola)",
-    yoga: "Shubha (till 08:24 AM, then Shukla)",
-    karana: "Bava (till 04:32 PM, then Balava)",
+    tithi: "सप्तमी (अगले दिन 04:02 AM तक)",
+    paksha: "शुक्ल पक्ष",
+    day: "सोमवार (Somawara)",
+    nakshatra: "हस्त (शाम 07:09 तक)",
+    yoga: "शिव (शाम 06:37 तक)",
+    karana: "गर (दोपहर 03:41 तक), वणिज (अगले दिन 04:02 तक)",
     sunrise: "05:48 AM",
     sunset: "07:12 PM",
-    rahuKaal: "07:30 AM - 09:00 AM",
-    gulikaKaal: "01:30 PM - 03:00 PM",
-    abhijitMuhurat: "11:55 AM - 12:47 PM"
+    abhijitMuhurat: "12:06 PM - 12:59 PM",
+    amritKaal: "12:54 PM - 02:34 PM",
+    brahmaMuhurta: "04:20 AM - 05:08 AM",
+    rahuKaal: "07:35 AM - 09:14 AM",
+    yamaganda: "10:54 AM - 12:33 PM",
+    gulikaKaal: "02:12 PM - 03:51 PM",
+    sunSign: "कर्क (Karka)",
+    moonSign: "कन्या (Kanya)",
+    dishaShool: "पूर्व दिशा",
+    ritu: "वर्षा (Varsha)"
   };
 
   const [coords, setCoords] = useState<{ latitude: number; longitude: number }>({
@@ -107,14 +116,23 @@ export default function ToolsPage() {
             // Map keys safely
             setActivePanchang({
               tithi: d.tithi?.[0]?.name || d.tithi?.name || panchangData.tithi,
+              paksha: d.paksha || d.tithi?.[0]?.paksha || panchangData.paksha,
+              day: d.vaara || panchangData.day,
               nakshatra: d.nakshatra?.[0]?.name || d.nakshatra?.name || panchangData.nakshatra,
               yoga: d.yoga?.[0]?.name || d.yoga?.name || panchangData.yoga,
               karana: d.karana?.[0]?.name || d.karana?.name || panchangData.karana,
               sunrise: d.sunrise || panchangData.sunrise,
               sunset: d.sunset || panchangData.sunset,
+              abhijitMuhurat: d.abhijit_muhurat?.[0]?.time || d.abhijit_muhurat?.time || panchangData.abhijitMuhurat,
+              amritKaal: d.amrit_kaal?.[0]?.time || d.amrit_kaal?.time || panchangData.amritKaal,
+              brahmaMuhurta: d.brahma_muhurta?.[0]?.time || d.brahma_muhurta?.time || panchangData.brahmaMuhurta,
               rahuKaal: d.rahu_kaal?.[0]?.time || d.rahu_kaal?.time || panchangData.rahuKaal,
+              yamaganda: d.yamaganda?.[0]?.time || d.yamaganda?.time || panchangData.yamaganda,
               gulikaKaal: d.gulika_kaal?.[0]?.time || d.gulika_kaal?.time || panchangData.gulikaKaal,
-              abhijitMuhurat: d.abhijit_muhurat?.[0]?.time || d.abhijit_muhurat?.time || panchangData.abhijitMuhurat
+              sunSign: d.sun_sign || d.solar_sign || panchangData.sunSign,
+              moonSign: d.moon_sign || d.lunar_sign || panchangData.moonSign,
+              dishaShool: d.disha_shool || panchangData.dishaShool,
+              ritu: d.ritu || panchangData.ritu
             });
           }
         }
@@ -502,53 +520,104 @@ export default function ToolsPage() {
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-2">
-                        {/* Left Column: Core Astrological Data */}
-                        <div className="space-y-6">
-                          <div className="border-b border-brand-ivory/10 pb-4">
-                            <span className="text-[10px] uppercase tracking-widest text-brand-ivory/50">Tithi</span>
-                            <p className="text-sm font-light mt-1">{activePanchang.tithi}</p>
-                          </div>
-                          <div className="border-b border-brand-ivory/10 pb-4">
-                            <span className="text-[10px] uppercase tracking-widest text-brand-ivory/50">Nakshatra</span>
-                            <p className="text-sm font-light mt-1">{activePanchang.nakshatra}</p>
-                          </div>
-                          <div className="border-b border-brand-ivory/10 pb-4">
-                            <span className="text-[10px] uppercase tracking-widest text-brand-ivory/50">Yoga</span>
-                            <p className="text-sm font-light mt-1">{activePanchang.yoga}</p>
-                          </div>
-                          <div className="border-b border-brand-ivory/10 pb-4">
-                            <span className="text-[10px] uppercase tracking-widest text-brand-ivory/50">Karana</span>
-                            <p className="text-sm font-light mt-1">{activePanchang.karana}</p>
+                        {/* Section 1: Core Panchang Elements / मुख्य अंग */}
+                        <div className="space-y-6 bg-brand-ivory/5 border border-brand-gold/10 p-6 rounded-sm">
+                          <h3 className="text-xs uppercase tracking-widest text-brand-gold font-semibold border-b border-brand-ivory/10 pb-3">Core Elements / मुख्य अंग</h3>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                              <span className="text-[10px] uppercase tracking-widest text-brand-ivory/50">तिथि (Tithi)</span>
+                              <p className="text-sm font-light mt-1">{activePanchang.tithi}</p>
+                            </div>
+                            <div>
+                              <span className="text-[10px] uppercase tracking-widest text-brand-ivory/50">पक्ष (Paksha)</span>
+                              <p className="text-sm font-light mt-1">{activePanchang.paksha}</p>
+                            </div>
+                            <div>
+                              <span className="text-[10px] uppercase tracking-widest text-brand-ivory/50">वार (Day)</span>
+                              <p className="text-sm font-light mt-1">{activePanchang.day}</p>
+                            </div>
+                            <div>
+                              <span className="text-[10px] uppercase tracking-widest text-brand-ivory/50">नक्षत्र (Nakshatra)</span>
+                              <p className="text-sm font-light mt-1">{activePanchang.nakshatra}</p>
+                            </div>
+                            <div>
+                              <span className="text-[10px] uppercase tracking-widest text-brand-ivory/50">योग (Yoga)</span>
+                              <p className="text-sm font-light mt-1">{activePanchang.yoga}</p>
+                            </div>
+                            <div className="sm:col-span-2">
+                              <span className="text-[10px] uppercase tracking-widest text-brand-ivory/50">करण (Karana)</span>
+                              <p className="text-xs font-light mt-1 leading-relaxed">{activePanchang.karana}</p>
+                            </div>
                           </div>
                         </div>
 
-                        {/* Right Column: Timings */}
-                        <div className="space-y-6 bg-brand-ivory/5 border border-brand-gold/20 p-6 rounded-sm">
-                          <h3 className="text-xs uppercase tracking-widest text-brand-gold font-semibold border-b border-brand-ivory/10 pb-3">Solar & Auspicious Timings</h3>
-                          
-                          <div className="grid grid-cols-2 gap-4">
-                            <div>
-                              <span className="text-[10px] uppercase tracking-widest text-brand-ivory/50">Sunrise</span>
-                              <p className="text-sm font-light mt-1">{activePanchang.sunrise}</p>
+                        {/* Section 2: Auspicious Hours / शुभ समय */}
+                        <div className="space-y-6 bg-brand-ivory/5 border border-brand-gold/15 p-6 rounded-sm">
+                          <h3 className="text-xs uppercase tracking-widest text-brand-gold font-semibold border-b border-brand-ivory/10 pb-3">Auspicious Hours / शुभ समय</h3>
+                          <div className="space-y-4">
+                            <div className="grid grid-cols-2 gap-4 border-b border-brand-ivory/5 pb-3">
+                              <div>
+                                <span className="text-[10px] uppercase tracking-widest text-brand-ivory/50">Sunrise</span>
+                                <p className="text-sm font-light mt-0.5">{activePanchang.sunrise}</p>
+                              </div>
+                              <div>
+                                <span className="text-[10px] uppercase tracking-widest text-brand-ivory/50">Sunset</span>
+                                <p className="text-sm font-light mt-0.5">{activePanchang.sunset}</p>
+                              </div>
                             </div>
                             <div>
-                              <span className="text-[10px] uppercase tracking-widest text-brand-ivory/50">Sunset</span>
-                              <p className="text-sm font-light mt-1">{activePanchang.sunset}</p>
-                            </div>
-                          </div>
-
-                          <div className="border-t border-brand-ivory/10 pt-4 space-y-4">
-                            <div>
-                              <span className="text-[10px] uppercase tracking-widest text-brand-gold/80">Abhijit Muhurat</span>
+                              <span className="text-[10px] uppercase tracking-widest text-brand-gold/80">अभिजीत मुहूर्त (Abhijit)</span>
                               <p className="text-sm font-medium text-brand-gold mt-1">{activePanchang.abhijitMuhurat}</p>
                             </div>
                             <div>
-                              <span className="text-[10px] uppercase tracking-widest text-brand-ivory/50">Rahu Kaal (Avoid starting events)</span>
+                              <span className="text-[10px] uppercase tracking-widest text-brand-gold/80">अमृत काल (Amrit Kaal)</span>
+                              <p className="text-sm font-medium text-brand-gold mt-1">{activePanchang.amritKaal}</p>
+                            </div>
+                            <div>
+                              <span className="text-[10px] uppercase tracking-widest text-brand-gold/80">ब्रह्म मुहूर्त (Brahma Muhurta)</span>
+                              <p className="text-sm font-medium text-brand-gold mt-1">{activePanchang.brahmaMuhurta}</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Section 3: Inauspicious Hours / अशुभ समय */}
+                        <div className="space-y-6 bg-brand-ivory/5 border border-brand-gold/10 p-6 rounded-sm">
+                          <h3 className="text-xs uppercase tracking-widest text-brand-gold font-semibold border-b border-brand-ivory/10 pb-3">Inauspicious Hours / अशुभ समय</h3>
+                          <div className="space-y-4">
+                            <div>
+                              <span className="text-[10px] uppercase tracking-widest text-brand-ivory/50">राहु काल (Rahu Kaal)</span>
                               <p className="text-xs font-light text-brand-ivory/70 mt-1">{activePanchang.rahuKaal}</p>
                             </div>
                             <div>
-                              <span className="text-[10px] uppercase tracking-widest text-brand-ivory/50">Gulika Kaal</span>
+                              <span className="text-[10px] uppercase tracking-widest text-brand-ivory/50">यम गण्ड (Yamaganda)</span>
+                              <p className="text-xs font-light text-brand-ivory/70 mt-1">{activePanchang.yamaganda}</p>
+                            </div>
+                            <div>
+                              <span className="text-[10px] uppercase tracking-widest text-brand-ivory/50">गुलिक काल (Gulika)</span>
                               <p className="text-xs font-light text-brand-ivory/70 mt-1">{activePanchang.gulikaKaal}</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Section 4: Cosmic Environment / अन्य जानकारी */}
+                        <div className="space-y-6 bg-brand-ivory/5 border border-brand-gold/10 p-6 rounded-sm">
+                          <h3 className="text-xs uppercase tracking-widest text-brand-gold font-semibold border-b border-brand-ivory/10 pb-3">Other Information / अन्य जानकारी</h3>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                              <span className="text-[10px] uppercase tracking-widest text-brand-ivory/50">सूर्य राशि (Sun Sign)</span>
+                              <p className="text-sm font-light mt-1">{activePanchang.sunSign}</p>
+                            </div>
+                            <div>
+                              <span className="text-[10px] uppercase tracking-widest text-brand-ivory/50">चंद्र राशि (Moon Sign)</span>
+                              <p className="text-sm font-light mt-1">{activePanchang.moonSign}</p>
+                            </div>
+                            <div>
+                              <span className="text-[10px] uppercase tracking-widest text-brand-ivory/50">दिशा शूल (Disha Shool)</span>
+                              <p className="text-sm font-light mt-1">{activePanchang.dishaShool}</p>
+                            </div>
+                            <div>
+                              <span className="text-[10px] uppercase tracking-widest text-brand-ivory/50">ऋतु (Ritu)</span>
+                              <p className="text-sm font-light mt-1">{activePanchang.ritu}</p>
                             </div>
                           </div>
                         </div>
