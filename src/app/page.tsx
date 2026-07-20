@@ -456,21 +456,27 @@ export default function Home() {
 
             <motion.div
               {...fadeInUp}
-              className="flex flex-col sm:flex-row gap-6 justify-center pt-6 max-w-md mx-auto"
+              className="flex flex-col sm:flex-row gap-4 justify-center pt-6 max-w-lg mx-auto"
             >
               <a
-                href="mailto:guidance@dharmikshree.org?subject=Consultation%20Request"
-                className="flex items-center justify-center gap-3 text-xs uppercase tracking-widest bg-brand-gold text-brand-charcoal hover:bg-brand-gold-hover hover:text-brand-charcoal px-8 py-4 font-semibold transition-all duration-300 rounded-sm shadow-md"
+                href="mailto:dharmikshree.connect@gmail.com?subject=Consultation%20Request"
+                className="flex items-center justify-center gap-3 text-xs uppercase tracking-widest bg-brand-gold text-brand-charcoal hover:bg-brand-gold-hover hover:text-brand-charcoal px-6 py-4 font-semibold transition-all duration-300 rounded-sm shadow-md cursor-pointer"
               >
                 <Mail size={16} /> Book Session
               </a>
               <a
-                href="https://wa.me/919999999999"
+                href="https://wa.me/919979729764"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-3 text-xs uppercase tracking-widest border border-brand-ivory/30 text-brand-ivory hover:border-brand-gold hover:text-brand-gold px-8 py-4 font-semibold transition-all duration-300 rounded-sm"
+                className="flex items-center justify-center gap-3 text-xs uppercase tracking-widest border border-brand-ivory/30 text-brand-ivory hover:border-brand-gold hover:text-brand-gold px-6 py-4 font-semibold transition-all duration-300 rounded-sm cursor-pointer"
               >
-                WhatsApp Us
+                WhatsApp
+              </a>
+              <a
+                href="tel:+919979729764"
+                className="flex items-center justify-center gap-3 text-xs uppercase tracking-widest border border-brand-ivory/30 text-brand-ivory hover:border-brand-gold hover:text-brand-gold px-6 py-4 font-semibold transition-all duration-300 rounded-sm cursor-pointer"
+              >
+                Call Directly
               </a>
             </motion.div>
           </div>

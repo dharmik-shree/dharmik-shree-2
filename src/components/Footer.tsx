@@ -39,24 +39,33 @@ export default function Footer() {
           <h4 className="text-xs uppercase tracking-widest text-brand-gold font-semibold mb-2">
             Connect
           </h4>
-          <p className="text-sm text-brand-ivory/60">
-            Enquiries: guidance@dharmikshree.org
-          </p>
+          <a
+            href="mailto:dharmikshree.connect@gmail.com"
+            className="text-sm text-brand-ivory/60 hover:text-brand-gold transition-colors duration-300"
+          >
+            Enquiries: dharmikshree.connect@gmail.com
+          </a>
           <div className="flex space-x-6 pt-2">
             <a
-              href="#"
+              href="https://www.instagram.com/astrologer_dharmikshree"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-xs uppercase tracking-wider hover:text-brand-gold transition-colors duration-300"
             >
               Instagram
             </a>
             <a
-              href="#"
+              href="https://www.youtube.com/@astrodharmikshreeguruji8646"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-xs uppercase tracking-wider hover:text-brand-gold transition-colors duration-300"
             >
               YouTube
             </a>
             <a
-              href="#"
+              href="https://www.linkedin.com/in/astrologer-dharmikshree-jani"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-xs uppercase tracking-wider hover:text-brand-gold transition-colors duration-300"
             >
               LinkedIn
