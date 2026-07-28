@@ -20,17 +20,17 @@ export interface KundaliFormData {
 
 export default function KundaliGenerator() {
   const [formData, setFormData] = useState<KundaliFormData>({
-    fullName: "Binju",
+    fullName: "",
     gender: "male",
-    day: "11",
-    month: "9",
-    year: "1994",
-    hour: "06",
-    minute: "05",
-    amPm: "PM",
-    birthPlace: "Mehsana, Gujarat, India",
-    latitude: "23N35",
-    longitude: "72E22",
+    day: "",
+    month: "",
+    year: "",
+    hour: "",
+    minute: "",
+    amPm: "AM",
+    birthPlace: "",
+    latitude: "",
+    longitude: "",
     language: "hindi",
   });
 
@@ -80,8 +80,14 @@ export default function KundaliGenerator() {
   };
 
   // Calculations derived from user birth info
-  const formattedDob = `${formData.day}:${formData.month}:${formData.year}`;
-  const formattedTime = `${formData.hour}:${formData.minute}:00 ${formData.amPm}`;
+  const formattedName = formData.fullName.trim() || "जातक (User)";
+  const formattedDob = (formData.day && formData.month && formData.year)
+    ? `${formData.day}:${formData.month}:${formData.year}`
+    : "11:9:1994";
+  const formattedTime = (formData.hour && formData.minute)
+    ? `${formData.hour}:${formData.minute}:00 ${formData.amPm}`
+    : "06:05:00 PM";
+  const formattedPlace = formData.birthPlace.trim() || "Mehsana, Gujarat, India";
 
   return (
     <div className="space-y-10">
@@ -124,8 +130,8 @@ export default function KundaliGenerator() {
                 required
                 value={formData.fullName}
                 onChange={handleInputChange}
-                placeholder="जैसे: बिनजू (Binju)"
-                className="w-full bg-brand-charcoal/80 border border-brand-gold/30 rounded-sm py-3 px-4 text-sm text-brand-ivory focus:border-brand-gold outline-none transition-all"
+                placeholder="अपना पूरा नाम दर्ज करें (Enter Full Name)"
+                className="w-full bg-brand-charcoal/80 border border-brand-gold/30 rounded-sm py-3 px-4 text-sm text-brand-ivory focus:border-brand-gold outline-none transition-all placeholder:text-brand-ivory/40"
               />
             </div>
 
@@ -153,10 +159,12 @@ export default function KundaliGenerator() {
               <div className="grid grid-cols-3 gap-2">
                 <select
                   name="day"
+                  required
                   value={formData.day}
                   onChange={handleInputChange}
                   className="bg-brand-charcoal/80 border border-brand-gold/30 rounded-sm py-3 px-2 text-sm text-brand-ivory outline-none"
                 >
+                  <option value="">दिन (Day)</option>
                   {Array.from({ length: 31 }, (_, i) => (
                     <option key={i + 1} value={i + 1}>
                       {i + 1}
@@ -165,10 +173,12 @@ export default function KundaliGenerator() {
                 </select>
                 <select
                   name="month"
+                  required
                   value={formData.month}
                   onChange={handleInputChange}
                   className="bg-brand-charcoal/80 border border-brand-gold/30 rounded-sm py-3 px-2 text-sm text-brand-ivory outline-none"
                 >
+                  <option value="">माह (Month)</option>
                   {[
                     "जनवरी (1)", "फ़रवरी (2)", "मार्च (3)", "अप्रैल (4)", "मई (5)", "जून (6)",
                     "जुलाई (7)", "अगस्त (8)", "सितंबर (9)", "अक्टूबर (10)", "नवंबर (11)", "दिसंबर (12)"
@@ -181,10 +191,11 @@ export default function KundaliGenerator() {
                 <input
                   type="number"
                   name="year"
+                  required
                   value={formData.year}
                   onChange={handleInputChange}
-                  placeholder="YYYY"
-                  className="bg-brand-charcoal/80 border border-brand-gold/30 rounded-sm py-3 px-3 text-sm text-brand-ivory outline-none"
+                  placeholder="वर्ष (YYYY)"
+                  className="bg-brand-charcoal/80 border border-brand-gold/30 rounded-sm py-3 px-3 text-sm text-brand-ivory outline-none placeholder:text-brand-ivory/40"
                 />
               </div>
             </div>
@@ -197,10 +208,12 @@ export default function KundaliGenerator() {
               <div className="grid grid-cols-3 gap-2">
                 <select
                   name="hour"
+                  required
                   value={formData.hour}
                   onChange={handleInputChange}
                   className="bg-brand-charcoal/80 border border-brand-gold/30 rounded-sm py-3 px-2 text-sm text-brand-ivory outline-none"
                 >
+                  <option value="">घंटे (Hour)</option>
                   {Array.from({ length: 12 }, (_, i) => {
                     const h = (i + 1).toString().padStart(2, "0");
                     return <option key={h} value={h}>{h}</option>;
@@ -208,10 +221,12 @@ export default function KundaliGenerator() {
                 </select>
                 <select
                   name="minute"
+                  required
                   value={formData.minute}
                   onChange={handleInputChange}
                   className="bg-brand-charcoal/80 border border-brand-gold/30 rounded-sm py-3 px-2 text-sm text-brand-ivory outline-none"
                 >
+                  <option value="">मिनट (Min)</option>
                   {Array.from({ length: 60 }, (_, i) => {
                     const m = i.toString().padStart(2, "0");
                     return <option key={m} value={m}>{m}</option>;
@@ -240,8 +255,8 @@ export default function KundaliGenerator() {
                 required
                 value={formData.birthPlace}
                 onChange={handleInputChange}
-                placeholder="शहर या गाँव का नाम दर्ज करें (जैसे: Mehsana, Ahmedabad, Delhi)"
-                className="w-full bg-brand-charcoal/80 border border-brand-gold/30 rounded-sm py-3 px-4 text-sm text-brand-ivory focus:border-brand-gold outline-none transition-all"
+                placeholder="शहर / गाँव का नाम (उदा. Surat, Mehsana, Ahmedabad)"
+                className="w-full bg-brand-charcoal/80 border border-brand-gold/30 rounded-sm py-3 px-4 text-sm text-brand-ivory focus:border-brand-gold outline-none transition-all placeholder:text-brand-ivory/40"
               />
             </div>
           </div>
@@ -281,7 +296,7 @@ export default function KundaliGenerator() {
                 <CheckCircle2 size={16} /> संपूर्ण धार्मिकश्री प्रीमियम कुंडली तैयार है!
               </div>
               <h3 className="font-serif text-2xl text-brand-ivory font-light">
-                {formData.fullName} की वैदिक प्रीमियम रिपोर्ट (सभी पृष्ठ शामिल)
+                {formattedName} की वैदिक प्रीमियम रिपोर्ट (सभी पृष्ठ शामिल)
               </h3>
             </div>
 
@@ -331,11 +346,11 @@ export default function KundaliGenerator() {
 
               {/* Personal Details Banner */}
               <div className="bg-gradient-to-r from-orange-500 to-amber-600 text-white p-6 rounded-r-full shadow-lg max-w-md ml-auto space-y-2">
-                <h2 className="text-2xl font-serif font-bold text-amber-100">{formData.fullName}</h2>
+                <h2 className="text-2xl font-serif font-bold text-amber-100">{formattedName}</h2>
                 <div className="text-xs space-y-1 font-mono text-amber-50 opacity-90">
                   <p>जन्म तिथि: {formattedDob}</p>
                   <p>जन्म समय: {formattedTime}</p>
-                  <p>स्थान: {formData.birthPlace} ({formData.latitude} {formData.longitude})</p>
+                  <p>स्थान: {formattedPlace} ({formData.latitude || "23N35"} {formData.longitude || "72E22"})</p>
                 </div>
               </div>
 
