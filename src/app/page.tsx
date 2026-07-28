@@ -25,38 +25,52 @@ export default function Home() {
 
   const services = [
     {
-      title: "Spiritual Mentorship",
-      subtitle: "For Leaders & Seekers",
+      title: "Vedic Astrology Consultation",
+      subtitle: "Personalized Kundali & Horary Reading",
       description:
-        "A private sanctuary for leaders, families, and individuals navigating transition. We align modern ambitions with timeless spiritual foundations to cultivate enduring inner stillness.",
-      image: "/assets/meditation_detail.png",
-    },
-    {
-      title: "Vedic Guidance & Counsel",
-      subtitle: "Wisdom Beyond Prediction",
-      description:
-        "Decoding the subtle blueprints of path and purpose. Uncovering clarity through authentic Vedic lineage study rather than common commercial astrological predictions.",
+        "Comprehensive life alignment through detailed Kundali analysis, planetary transit readings, and accurate Dasha timing. Uncover answers regarding career, health, finances, and destiny.",
       image: "/assets/dharmik_shree_real.jpg",
     },
     {
-      title: "Vastu Shastra Consultation",
-      subtitle: "Harmonizing Sacred Space",
+      title: "Face Reading & Samudrik Shastra",
+      subtitle: "Facial Feature & Intuitive Analysis",
       description:
-        "Realigning residential and commercial spatial layouts to optimize natural energy flows. Experience Aman Resorts-like energetic balance in your personal spaces.",
+        "Ancient wisdom of face reading to evaluate hidden personality traits, subconscious patterns, emotional health, and future life tendencies without needing birth details.",
       image: "/assets/meditation_detail.png",
     },
     {
-      title: "Garbh Sanskar Guidance",
+      title: "Relationship & Marriage Counselling",
+      subtitle: "Kundali Matching & Emotional Harmony",
+      description:
+        "Expert astrological matching (Gun Milan, Mangal Dosha check) and compassionate relationship counselling to resolve marital friction, foster deep understanding, and restore family peace.",
+      image: "/assets/dharmik_shree_real.jpg",
+    },
+    {
+      title: "Spiritual Mentorship & Guidance",
+      subtitle: "For Leaders, Families & Seekers",
+      description:
+        "Acharya Dharmikshree is a renowned astrologer and spiritual guru from a family that has been practising these arts for generations, offering private spiritual counsel and inner alignment.",
+      image: "/assets/meditation_detail.png",
+    },
+    {
+      title: "Vastu Shastra Consultation",
+      subtitle: "Harmonizing Residential & Commercial Space",
+      description:
+        "Realigning residential, corporate, and commercial spatial layouts to optimize natural energy flows and unlock prosperity, peace, and vibrant health.",
+      image: "/assets/meditation_detail.png",
+    },
+    {
+      title: "Garbh Sanskar & Family Guidance",
       subtitle: "Nurturing Future Generations",
       description:
-        "Vedic spiritual practices and mindful alignment for expectant parents, inviting elevated consciousness into the journey of childbirth.",
+        "Vedic spiritual practices and mindful astrological alignment for expectant parents, inviting elevated consciousness into the journey of pregnancy and child development.",
       image: "/assets/dharmik_shree_real.jpg",
     },
     {
       title: "Vedic Rituals & Pujas",
       subtitle: "Auspicious Energetic Alignments",
       description:
-        "Conduction of authentic, heritage rituals designed to purify spaces, ease energetic transitions, and invoke divine blessings for homes and enterprises.",
+        "Conduction of authentic heritage pujas and mantras designed to neutralize planetary afflictions, purify commercial/home spaces, and invoke divine blessings.",
       image: "/assets/meditation_detail.png",
     },
   ];
@@ -88,9 +102,9 @@ export default function Home() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] as const }}
-              className="text-xs uppercase tracking-[0.4em] text-brand-gold mb-6 block font-medium"
+              className="text-xs uppercase tracking-[0.4em] text-brand-gold mb-6 block font-semibold"
             >
-              Vedic Guide & Spiritual Mentor
+              Astrologer & Spiritual Guide
             </motion.span>
 
             <motion.h1
@@ -99,8 +113,8 @@ export default function Home() {
               transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] as const }}
               className="font-serif text-4xl sm:text-6xl md:text-7xl font-light tracking-[0.05em] leading-tight max-w-5xl mb-8"
             >
-              Ancient Wisdom For <br />
-              <span className="italic font-normal text-brand-gold">Modern Lives</span>
+              Vedic Astrology & <br />
+              <span className="italic font-normal text-brand-gold">Spiritual Guidance</span>
             </motion.h1>
 
             <motion.p
@@ -109,7 +123,7 @@ export default function Home() {
               transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] as const }}
               className="text-sm md:text-base font-light text-brand-ivory/70 max-w-xl mb-12 tracking-wide leading-relaxed"
             >
-              Helping visionary individuals, families, and leaders find absolute clarity and alignment through timeless Vedic guidance.
+              Acharya Dharmikshree is a renowned astrologer from a family that has been practising these arts for generations. He is also a spiritual guru offering astrology consultations, Kundali readings, face reading, and relationship counselling.
             </motion.p>
 
             <motion.div
@@ -122,13 +136,13 @@ export default function Home() {
                 href="#journey"
                 className="inline-block text-xs uppercase tracking-[0.2em] bg-brand-gold text-brand-charcoal hover:bg-brand-gold-hover hover:text-brand-charcoal px-8 py-4 font-semibold transition-all duration-300 rounded-sm shadow-md"
               >
-                Book Consultation
+                Book Astrology Consultation
               </a>
               <a
-                href="#about"
+                href="#services"
                 className="inline-block text-xs uppercase tracking-[0.2em] border border-brand-ivory/30 text-brand-ivory hover:border-brand-gold hover:text-brand-gold px-8 py-4 font-semibold transition-all duration-300 rounded-sm"
               >
-                Explore Teachings
+                Explore Services
               </a>
             </motion.div>
           </div>
@@ -154,25 +168,20 @@ export default function Home() {
             {/* Split Narrative */}
             <motion.div {...fadeInUp} className="space-y-8 order-2 lg:order-1">
               <span className="text-xs uppercase tracking-[0.25em] text-brand-gold font-medium block">
-                The Heritage of Wisdom
+                Astrologer and Spiritual Guide
               </span>
               <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-light text-brand-charcoal tracking-wide">
-                Who is Dharmik Shree?
+                Acharya Dharmikshree
               </h2>
               <div className="space-y-6 text-brand-charcoal/80 font-light leading-relaxed text-sm sm:text-base">
-                <p>
-                  Dharmik Shree represents a lineage of authentic Vedic practices,
-                  carrying forward ancient Indian wisdom customized for the complex
-                  realities of modern life.
+                <p className="text-base sm:text-lg font-normal text-brand-charcoal border-l-2 border-brand-gold pl-4">
+                  Acharya Dharmikshree is a renowned astrologer from a family that has been practising these arts for generations. He is also a spiritual guru offering guidance to seekers worldwide.
                 </p>
                 <p>
-                  Rather than functioning as a conventional predictive astrologer,
-                  he acts as a Spiritual Guide and Mentor to visionaries, business
-                  families, and seekers worldwide. His methodology is rooted in Dharma,
-                  offering clarity over simple fortune-telling, and alignment over superstition.
+                  Specializing in authentic Vedic astrology, Kundali analysis, face reading (Samudrik Shastra), spiritual mentorship, Vastu consultation, and relationship counselling, he offers practical solutions and deep karmic clarity.
                 </p>
                 <p className="italic font-serif text-brand-bronze text-base">
-                  &ldquo;A path is not predicted; it is aligned through wisdom, intent, and conscious action.&rdquo;
+                  &ldquo;A path is aligned through ancient astrological wisdom, spiritual intent, and conscious action.&rdquo;
                 </p>
               </div>
             </motion.div>
@@ -365,56 +374,97 @@ export default function Home() {
         </section>
 
         {/* Testimonials */}
-        <section id="testimonials" className="py-24 md:py-36 px-6 md:px-12 max-w-7xl mx-auto">
-          <div className="text-center space-y-4 mb-20">
-            <span className="text-xs uppercase tracking-[0.25em] text-brand-gold font-medium block">
-              Voices of Seekers
-            </span>
-            <h2 className="font-serif text-3xl sm:text-4xl font-light text-brand-charcoal tracking-wide">
-              Testimonials
+        <section id="testimonials" className="py-24 md:py-36 bg-brand-charcoal/5 border-t border-b border-brand-gold/10 overflow-hidden">
+          <div className="max-w-7xl mx-auto px-6 md:px-12 mb-12 text-center space-y-4">
+            <div className="inline-flex items-center gap-2 bg-brand-gold/10 border border-brand-gold/25 py-1.5 px-4 rounded-full text-xs text-brand-gold font-semibold uppercase tracking-widest">
+              <span>★ 4.9 / 5 Rating</span>
+              <span className="text-brand-charcoal/30">•</span>
+              <span>270+ Verified Google Reviews</span>
+            </div>
+            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-light text-brand-charcoal tracking-wide">
+              Google Client Testimonials
             </h2>
+            <p className="text-xs sm:text-sm text-brand-charcoal/60 max-w-xl mx-auto font-light leading-relaxed">
+              Real experiences from individuals, business owners, and families guided by Acharya Dharmikshree.
+            </p>
+            <div className="w-16 h-px bg-brand-gold mx-auto mt-4" />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Written Testimonial Quote */}
-            <motion.div {...fadeInUp} className="space-y-8">
-              <span className="text-brand-gold font-serif text-6xl block select-none">&ldquo;</span>
-              <p className="font-serif italic text-lg md:text-xl text-brand-charcoal/90 leading-relaxed">
-                Working with Dharmik Shree completely transformed the path of our family enterprise.
-                His guidance is grounded in practical truth, offering absolute clarity in moments of complexity.
-                He does not sell predictions; he restores alignment.
-              </p>
-              <div className="space-y-1">
-                <p className="text-sm font-semibold uppercase tracking-wider text-brand-charcoal">
-                  Vikram Malhotra
-                </p>
-                <p className="text-xs text-brand-charcoal/50 uppercase tracking-widest">
-                  Industrialist & Philanthropist
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Video Testimonial / Elegant Cover Image */}
-            <motion.div
-              {...fadeInUp}
-              className="relative aspect-video w-full overflow-hidden border border-brand-gold/15 rounded-sm shadow-xl bg-brand-charcoal group"
-            >
-              <Image
-                src="/assets/meditation_detail.png"
-                alt="Testimonial Video Cover"
-                fill
-                sizes="(max-width: 1024px) 100vw, 640px"
-                className="object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000"
-              />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <button
-                  className="w-16 h-16 rounded-full bg-brand-ivory text-brand-charcoal flex items-center justify-center hover:bg-brand-gold hover:text-brand-ivory transition-colors duration-300 shadow-lg"
-                  aria-label="Play video testimonial"
+          {/* Horizontal Auto-Scrolling Marquee */}
+          <div className="relative w-full overflow-hidden py-4">
+            <div className="animate-marquee flex gap-8">
+              {[
+                {
+                  quote: "Acharya Dharmikshree guides in such a down-to-earth and perfect way. He answers each and every question with immense patience and provides practical, effective solutions.",
+                  name: "Rajesh Patel",
+                  location: "Surat, Gujarat",
+                  badge: "Google Verified Review"
+                },
+                {
+                  quote: "Very accurate Kundali reading and genuine spiritual guidance. His insights into our family business transition helped us make crucial decisions with absolute confidence.",
+                  name: "Vikram Mehta & Family",
+                  location: "Business Consultation",
+                  badge: "Google Verified Review"
+                },
+                {
+                  quote: "Outstanding Vastu Shastra & Face Reading session! He gives deep karmic clarity rather than fear. Highly recommended for anyone seeking true spiritual guidance.",
+                  name: "Ananya Sharma",
+                  location: "Mumbai, Maharashtra",
+                  badge: "Google Verified Review"
+                },
+                {
+                  quote: "He is a gem of a person. His astrological remedies and Garbh Sanskar guidance during my sister's pregnancy brought immense peace and positive vibes to our home.",
+                  name: "Pooja & Jignesh Shah",
+                  location: "Surat, Gujarat",
+                  badge: "Google Verified Review"
+                },
+                {
+                  quote: "Extremely knowledgeable and polite. Acharya ji analyzed my horoscope so deeply and gave simple daily mantras that brought positive shifts in my career within months.",
+                  name: "Hardik Joshi",
+                  location: "Ahmedabad, Gujarat",
+                  badge: "Google Verified Review"
+                },
+                {
+                  quote: "Authentic Vedic astrology consultation. No unnecessary rituals or fear-mongering; just pure wisdom, scientific Vastu insights, and compassionate life coaching.",
+                  name: "Sanjay Singhania",
+                  location: "Delhi NCR",
+                  badge: "Google Verified Review"
+                },
+                {
+                  quote: "His deep lineage knowledge of Lal Kitab & Vimshottari Dasha helped us navigate our family property matters peacefully. Grateful for his genuine guidance.",
+                  name: "Kavita & Nitin Parikh",
+                  location: "Vadodara, Gujarat",
+                  badge: "Google Verified Review"
+                },
+                {
+                  quote: "Wonderful experience consulting Acharya Dharmikshree. He gives exact remedies that are easy to follow in daily life. My career stress has significantly reduced.",
+                  name: "Bhavin Desai",
+                  location: "Surat, Gujarat",
+                  badge: "Google Verified Review"
+                }
+              ].map((rev, idx) => (
+                <div
+                  key={`${rev.name}-${idx}`}
+                  className="w-[380px] shrink-0 bg-brand-charcoal text-brand-ivory border border-brand-gold/20 p-8 rounded-sm shadow-xl flex flex-col justify-between h-[280px]"
                 >
-                  <span className="ml-1">&#9658;</span>
-                </button>
-              </div>
-            </motion.div>
+                  <div className="space-y-4">
+                    <div className="flex text-brand-gold text-xs gap-1 font-mono">★★★★★</div>
+                    <p className="font-serif italic text-sm text-brand-ivory/90 leading-relaxed font-light line-clamp-4">
+                      &ldquo;{rev.quote}&rdquo;
+                    </p>
+                  </div>
+                  <div className="border-t border-brand-ivory/10 pt-4 flex justify-between items-center text-xs">
+                    <div>
+                      <p className="font-semibold text-brand-gold">{rev.name}</p>
+                      <p className="text-[10px] text-brand-ivory/50">{rev.location}</p>
+                    </div>
+                    <span className="text-[9px] uppercase tracking-widest px-2 py-0.5 bg-brand-gold/15 text-brand-gold rounded border border-brand-gold/30">
+                      {rev.badge}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 

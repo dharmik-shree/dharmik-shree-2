@@ -19,20 +19,21 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Dharmik Shree | Spiritual Mentor & Vedic Guide",
-    template: "%s | Dharmik Shree",
+    default: "Acharya Dharmikshree | Astrologer & Spiritual Guide | Vedic Astrology Services",
+    template: "%s | Acharya Dharmikshree",
   },
   description:
-    "Enter the digital sanctuary of Dharmik Shree. A revered Spiritual Mentor, Vedic Guide, and Teacher offering timeless wisdom, Vastu guidance, and astrological clarity for leaders, families, and entrepreneurs.",
+    "Acharya Dharmikshree is a renowned astrologer from a family that has been practising these arts for generations. He is also a spiritual guru offering Vedic astrology consultations, Kundali readings, Vastu Shastra, Face Reading, and relationship counselling.",
   keywords: [
-    "Spiritual Mentor",
-    "Vedic Guidance",
+    "Astrologer",
+    "Spiritual Guide",
+    "Astrology Services",
     "Astrology Consultation",
-    "Vastu Expert",
-    "Spiritual Teacher",
-    "Ancient Indian Wisdom",
-    "Life Guidance",
-    "Vedic Mentor",
+    "Face Reader",
+    "Relationship Counsellor",
+    "Kundali Reading",
+    "Vastu Consultation",
+    "Acharya Dharmikshree",
     "Dharmik Shree",
   ],
   authors: [{ name: "Dharmik Shree" }],

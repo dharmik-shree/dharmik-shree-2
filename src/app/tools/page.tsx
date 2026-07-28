@@ -15,14 +15,16 @@ import {
   Search,
   CheckCircle,
   Copy,
-  ChevronRight
+  ChevronRight,
+  FileText
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import KundaliGenerator from "@/components/KundaliGenerator";
 
 export default function ToolsPage() {
-  type ToolType = "panchang" | "horoscope" | "wisdom" | "muhurat" | "calendar" | "hora" | "vastu" | "sadhana";
-  const [activeTab, setActiveTab] = useState<ToolType>("panchang");
+  type ToolType = "kundali" | "panchang" | "horoscope" | "wisdom" | "muhurat" | "calendar" | "hora" | "vastu" | "sadhana";
+  const [activeTab, setActiveTab] = useState<ToolType>("kundali");
   const [selectedZodiac, setSelectedZodiac] = useState<string>("Aries");
   const [currentTime, setCurrentTime] = useState<string>("");
   const [currentDate, setCurrentDate] = useState<string>("");
@@ -436,6 +438,7 @@ export default function ToolsPage() {
   const activeSadhanaDetail = sadhanaData[energyState as keyof typeof sadhanaData] || sadhanaData.overwhelmed;
 
   const toolCategories: { id: ToolType; label: string; icon: any }[] = [
+    { id: "kundali", label: "Free Kundali PDF", icon: FileText },
     { id: "panchang", label: "Daily Panchang", icon: Sun },
     { id: "horoscope", label: "Daily Horoscope", icon: Sparkles },
     { id: "wisdom", label: "Vedic Wisdom", icon: BookOpen },
@@ -504,7 +507,10 @@ export default function ToolsPage() {
                   transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                   className="bg-brand-charcoal text-brand-ivory rounded-sm border border-brand-gold/15 p-6 sm:p-10 md:p-12 shadow-2xl relative overflow-hidden min-h-[500px]"
                 >
-                  <div className="absolute right-0 top-0 w-96 h-96 bg-brand-gold/5 rounded-full blur-3xl pointer-events-none" />
+                  {/* 0. FREE KUNDALI PDF GENERATOR */}
+                  {activeTab === "kundali" && (
+                    <KundaliGenerator />
+                  )}
 
                   {/* 1. TODAY'S PANCHANG */}
                   {activeTab === "panchang" && (
