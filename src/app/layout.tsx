@@ -20,28 +20,26 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Acharya Dharmikshree | Astrologer & Spiritual Guide | Vedic Astrology Services",
-    template: "%s | Acharya Dharmikshree",
+    default: "Dharmikshree | Astrologer, Vastu Consultant & Spiritual Guide",
+    template: "%s | Dharmikshree",
   },
   description:
-    "Acharya Dharmikshree is a renowned astrologer from a family that has been practising these arts for generations. He is also a spiritual guru offering Vedic astrology consultations, Kundali readings, Vastu Shastra, Face Reading, and relationship counselling.",
+    "Dharmikshree is a 13th-generation Vedic Astrologer, Vastu Consultant, and Spiritual Guide, carrying forward a family legacy of more than 300 years of ancient wisdom and spiritual practice.",
   keywords: [
     "Astrologer",
     "Spiritual Guide",
-    "Astrology Services",
+    "Vastu Consultant",
+    "Vedic Astrology",
+    "Vastu Shastra",
     "Astrology Consultation",
-    "Face Reader",
-    "Relationship Counsellor",
-    "Kundali Reading",
-    "Vastu Consultation",
-    "Acharya Dharmikshree",
+    "Dharmikshree",
     "Dharmik Shree",
   ],
-  authors: [{ name: "Dharmik Shree" }],
+  authors: [{ name: "Dharmikshree" }],
   openGraph: {
-    title: "Dharmik Shree | Spiritual Mentor & Vedic Guide",
+    title: "Dharmikshree | Astrologer, Vastu Consultant & Spiritual Guide",
     description:
-      "Timeless Vedic wisdom and spiritual guidance for modern lives. Explore consultations, mentorship, and sacred teachings.",
+      "Dharmikshree is a 13th-generation Vedic Astrologer, Vastu Consultant, and Spiritual Guide, carrying forward a family legacy of more than 300 years of ancient wisdom.",
     url: "https://www.dharmikshree.org",
     siteName: "Dharmik Shree",
     locale: "en_US",
@@ -49,8 +47,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Dharmik Shree | Spiritual Mentor & Vedic Guide",
-    description: "Timeless Vedic wisdom and spiritual mentorship.",
+    title: "Dharmikshree | Astrologer, Vastu Consultant & Spiritual Guide",
+    description: "13th-generation Vedic Astrologer, Vastu Consultant, and Spiritual Guide.",
   },
   robots: {
     index: true,

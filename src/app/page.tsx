@@ -1,11 +1,80 @@
 "use client";
 
+import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { ArrowDown, Mail, Phone, ExternalLink } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { blogPosts } from "@/data/blogs";
+
+interface AutoplayVideoProps {
+  src: string;
+  title: string;
+  placeholderImage: string;
+}
+
+function AutoplayVideo({ src, title, placeholderImage }: AutoplayVideoProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { amount: 0.5, once: false });
+  const [videoSrc, setVideoSrc] = useState("");
+
+  useEffect(() => {
+    if (isInView) {
+      const videoIdMatch = src.match(/\/embed\/([^/?]+)/);
+      const videoId = videoIdMatch ? videoIdMatch[1] : "";
+      const loopParam = videoId ? `&loop=1&playlist=${videoId}` : "";
+      // Removed controls=0 to allow user interaction (play/pause/mute)
+      setVideoSrc(`${src}?autoplay=1&mute=1&enablejsapi=1&rel=0${loopParam}`);
+    } else {
+      setVideoSrc("");
+    }
+  }, [isInView, src]);
+
+  // Convert embed URL back to Shorts URL for external viewing
+  const shortsUrl = src.replace("/embed/", "/shorts/");
+
+  return (
+    <div ref={ref} className="relative w-full h-full group">
+      {!videoSrc && (
+        <div className="absolute inset-0 w-full h-full">
+          <Image
+            src={placeholderImage}
+            alt={title}
+            fill
+            sizes="(max-width: 1024px) 100vw, 320px"
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-brand-charcoal/30 flex items-center justify-center">
+            <div className="w-14 h-14 rounded-full bg-brand-ivory/10 backdrop-blur-md border border-brand-gold/40 flex items-center justify-center shadow-lg animate-pulse">
+              <div className="w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent border-l-[14px] border-l-brand-gold ml-1" />
+            </div>
+          </div>
+        </div>
+      )}
+      {videoSrc && (
+        <>
+          <iframe
+            src={videoSrc}
+            title={title}
+            className="absolute inset-0 w-full h-full border-0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          />
+          {/* External Link Overlay */}
+          <a
+            href={shortsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute top-3 left-3 bg-brand-charcoal/90 hover:bg-brand-gold text-brand-ivory hover:text-brand-charcoal text-[10px] uppercase tracking-widest font-semibold px-2.5 py-1.5 rounded-sm border border-brand-gold/25 transition-all duration-300 flex items-center gap-1.5 shadow-md z-20"
+          >
+            Open YouTube <ExternalLink size={10} />
+          </a>
+        </>
+      )}
+    </div>
+  );
+}
 
 export default function Home() {
   const fadeInUp = {
@@ -25,53 +94,75 @@ export default function Home() {
 
   const services = [
     {
-      title: "Vedic Astrology Consultation",
-      subtitle: "Personalized Kundali & Horary Reading",
+      title: "Divine Consultation",
+      subtitle: "Face Reading, Horoscope & Palmistry",
       description:
-        "Comprehensive life alignment through detailed Kundali analysis, planetary transit readings, and accurate Dasha timing. Uncover answers regarding career, health, finances, and destiny.",
+        "Dharmikshree (13th Generation Astrologer, Spiritual Guide & Vastu Consultant) के साथ एक divine consultation, जो Seva Contribution के रूप में लिया जाता है।\n\n• Face Reading – बिना कुछ पूछे, सिर्फ आपका face देखकर personality, strengths, challenges और life direction की guidance\n• Horoscope Reading – Career, Business, Marriage, Relationship, Finance, Health और Life-related questions के answers\n• Palmistry Reading – Hand lines के माध्यम से karmic path, opportunities और life patterns को समझना\n\nOnline & Personal Meeting Available. Includes 1-Week Voice Note Follow-Up Support.",
+      price: "₹9,900",
+      image: "/assets/dharmik_shree_real.jpg",
+      videoUrl: "https://www.youtube.com/embed/a3GEqxyy_jc",
+    },
+    {
+      title: "Marriage Compatibility",
+      subtitle: "Astrological, Behavioral & Life Alignment",
+      description:
+        "Discover long-lasting harmony through a holistic compatibility analysis:\n\n• Astrological Factors – Mangal Dosh, Rahu–Ketu, Nadi, Bhukti, Yoni, Tara, and Gan\n• Behavioral Insights – temperament, emotions, loyalty, love patterns, and family dynamics\n• Life Alignment – luck, lifestyle compatibility, money management, and children-related prospects",
+      price: "₹7,200",
+      image: "/assets/dharmik_shree_real.jpg",
+      videoUrl: "https://www.youtube.com/embed/ZixUk7EruIE",
+    },
+    {
+      title: "Vastu and Space Alignment with Astrology",
+      subtitle: "Cosmic VastuShastra & Panch Tatva Balancing",
+      description:
+        "नमस्कार। आपकी स्पेस यानी आपकी जगह, आपकी प्रॉपर्टी, आपका घर या ऑफिस सिर्फ स्ट्रक्चर नहीं होते। यह आपकी वेल्थ और पीस के फ्लो का रिफ्लेक्शन होता है। हमारी परंपरा हमेशा स्पेस को इनर बैलेंस का एक हिस्सा मानती है। इस वास्तु शास्त्र में हम 10 डायरेक्शन और फाइव एलिमेंट और प्लेनेट तथा पर्सनल एनर्जी को एक साथ अलाइन करते हैं। जब आपकी प्लेस अलाइन होती है तो हेल्थ वेल्थ मनी फ्लो बिजनेस और रिलेशनशिप में नेचुरल ग्रोथ होता है। वास्तुहीनम गृहम शून्यम विदाउट वास्तु देयर इज नो एनर्जी अलाइन स्पेस इंसान को ज्यादा शांत फोकस्ड और स्टेबल करता है। अगर आप अपने घर या वर्क प्लेस को एस्ट्रोलॉजी बैक वास्तु से अलाइन करना चाहते हो तो अपॉइंटमेंट बुक कीजिए धार्मिक श्री के।",
+      price: "₹72,000",
+      image: "/assets/meditation_detail.png",
+      videoUrl: "https://www.youtube.com/embed/d66ctm9hYFI",
+    },
+    {
+      title: "Baby Name Suggestion",
+      subtitle: "Sanskrit-Rooted, Modern & Meaningful",
+      description:
+        "A research-driven, personalized naming process, curated with precision and responsibility—because a child’s name carries lifelong identity, vibration, and direction.\n\n• 10 carefully researched name options (5 + 5)\n• Sanskrit-based, modern in sound, and rare in usage\n• Meaning, Vedic reference, and positive life impact explained\n• Names aligned through Numerology, Nakshatra, and family energy resonance",
+      price: "₹9,900",
+      image: "/assets/meditation_detail.png",
+      videoUrl: "https://www.youtube.com/embed/soyE8amD5-0",
+    },
+    {
+      title: "Premium Business Name Consultation",
+      subtitle: "Strategic Brand & Energy Alignment",
+      description:
+        "A business name is your brand’s energetic identity. We don’t suggest random names—we create names that are strategically aligned for long-term success.\n\nIncludes research into Rashi & Astrology, Panch Tatva (Five Elements), Numerology, Business Nature & Market Positioning, Brand Psychology & Sound Impact, and basic Trademark/Domain availability.",
+      price: "₹18,000",
       image: "/assets/dharmik_shree_real.jpg",
     },
     {
-      title: "Face Reading & Samudrik Shastra",
-      subtitle: "Facial Feature & Intuitive Analysis",
+      title: "Corporate Astrology & Family Mentorship",
+      subtitle: "Conscious Leadership & Aligned Success",
       description:
-        "Ancient wisdom of face reading to evaluate hidden personality traits, subconscious patterns, emotional health, and future life tendencies without needing birth details.",
+        "We help leaders, families, and decision-makers transform the way they think, feel, and decide. True solutions in business, relationships, or life emerge only when the mind, energy, and space are aligned.\n\nCovers: Business clarity/growth, leadership alignment & team harmony, office Vastu energy optimization, and family balance.\n\nMonthly Access: 2 private sessions per month (1 hour each) and guidance for up to 2 family members.",
+      price: "₹45,000 / month",
       image: "/assets/meditation_detail.png",
+      videoUrl: "https://www.youtube.com/embed/y_VSsB0htyI",
     },
     {
-      title: "Relationship & Marriage Counselling",
-      subtitle: "Kundali Matching & Emotional Harmony",
+      title: "Baby Birth Date & Time Selection",
+      subtitle: "Shubh Muhurat Selection",
       description:
-        "Expert astrological matching (Gun Milan, Mangal Dosha check) and compassionate relationship counselling to resolve marital friction, foster deep understanding, and restore family peace.",
+        "बच्चे का Birth Date & Time केवल जन्म का समय नहीं होता—यही उसके Destiny, Intelligence, Prosperity और जीवन की दिशा की नींव रखता है। हम कोई भी Random Date Suggest नहीं करते।\n\nहमारा Research 15+ Combinations पर आधारित होता है: Nakshatra (नक्षत्र), Rashi & Moon Sign (राशि), Ascendant (Lagna), व ग्रहों की स्थिति व बल।",
+      price: "₹7,200",
       image: "/assets/dharmik_shree_real.jpg",
+      videoUrl: "https://www.youtube.com/embed/2mZjXyQBoX8",
     },
     {
-      title: "Spiritual Mentorship & Guidance",
-      subtitle: "For Leaders, Families & Seekers",
+      title: "Garbh Sanskar Pregnancy Program",
+      subtitle: "9-Month Divine & Scientific Guidance",
       description:
-        "Acharya Dharmikshree is a renowned astrologer and spiritual guru from a family that has been practising these arts for generations, offering private spiritual counsel and inner alignment.",
+        "“9 months of the mother shape the next 90 years of the child.”\n\n• Guided from Month 3 to Month 9 based on Vedic Astrology, Mantras, Meditation & Psychology\n• Monthly planet-based guidance, mantras, and temple-based monthly Jap\n• Diet, activity & emotional alignment support\n• 7th Month Special Sanskar (3.5 hrs) for spiritual & mental strengthening\n\nMonthly: ₹7,200 | 7th Month Puja: ₹18,000 | Total Program: ₹68,400",
+      price: "₹7,200 / month",
       image: "/assets/meditation_detail.png",
-    },
-    {
-      title: "Vastu Shastra Consultation",
-      subtitle: "Harmonizing Residential & Commercial Space",
-      description:
-        "Realigning residential, corporate, and commercial spatial layouts to optimize natural energy flows and unlock prosperity, peace, and vibrant health.",
-      image: "/assets/meditation_detail.png",
-    },
-    {
-      title: "Garbh Sanskar & Family Guidance",
-      subtitle: "Nurturing Future Generations",
-      description:
-        "Vedic spiritual practices and mindful astrological alignment for expectant parents, inviting elevated consciousness into the journey of pregnancy and child development.",
-      image: "/assets/dharmik_shree_real.jpg",
-    },
-    {
-      title: "Vedic Rituals & Pujas",
-      subtitle: "Auspicious Energetic Alignments",
-      description:
-        "Conduction of authentic heritage pujas and mantras designed to neutralize planetary afflictions, purify commercial/home spaces, and invoke divine blessings.",
-      image: "/assets/meditation_detail.png",
+      videoUrl: "https://www.youtube.com/embed/itonId2pva4",
     },
   ];
 
@@ -83,18 +174,32 @@ export default function Home() {
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="relative h-screen w-full flex items-center justify-center bg-brand-charcoal overflow-hidden">
-          {/* Background image with luxury shadow overlay */}
-          <div className="absolute inset-0 z-0">
-            <Image
-              src="/assets/dharmik_shree_real.jpg"
-              alt="Dharmik Shree portrait"
-              fill
-              sizes="100vw"
-              className="object-cover opacity-35 object-center"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-brand-charcoal via-brand-charcoal/40 to-transparent" />
-            <div className="absolute inset-0 bg-brand-charcoal/20" />
+          {/* Background image with luxury shadow overlay and live animation */}
+          <div className="absolute inset-0 z-0 overflow-hidden">
+            <motion.div
+              animate={{
+                scale: [1.02, 1.08, 1.02],
+                x: [0, 8, 0],
+                y: [0, -6, 0],
+              }}
+              transition={{
+                duration: 25,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+              className="absolute inset-0 w-full h-full"
+            >
+              <Image
+                src="/assets/dharmik_shree_real_hd.jpg"
+                alt="Dharmik Shree portrait"
+                fill
+                sizes="100vw"
+                className="object-cover opacity-35 object-center"
+                priority
+              />
+            </motion.div>
+            <div className="absolute inset-0 bg-gradient-to-t from-brand-charcoal via-brand-charcoal/40 to-transparent z-10" />
+            <div className="absolute inset-0 bg-brand-charcoal/20 z-10" />
           </div>
 
           <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 text-center text-brand-ivory flex flex-col items-center">
@@ -123,7 +228,7 @@ export default function Home() {
               transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] as const }}
               className="text-sm md:text-base font-light text-brand-ivory/70 max-w-xl mb-12 tracking-wide leading-relaxed"
             >
-              Acharya Dharmikshree is a renowned astrologer from a family that has been practising these arts for generations. He is also a spiritual guru offering astrology consultations, Kundali readings, face reading, and relationship counselling.
+              Dharmikshree is a 13th-generation Vedic Astrologer, Vastu Consultant, and Spiritual Guide, carrying forward a family legacy of more than 300 years of ancient wisdom and spiritual practice.
             </motion.p>
 
             <motion.div
@@ -168,21 +273,32 @@ export default function Home() {
             {/* Split Narrative */}
             <motion.div {...fadeInUp} className="space-y-8 order-2 lg:order-1">
               <span className="text-xs uppercase tracking-[0.25em] text-brand-gold font-medium block">
-                Astrologer and Spiritual Guide
+                13th Generation Astrologer &bull; Vastu Consultant &bull; Spiritual Guide
               </span>
               <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-light text-brand-charcoal tracking-wide">
-                Acharya Dharmikshree
+                Dharmikshree
               </h2>
               <div className="space-y-6 text-brand-charcoal/80 font-light leading-relaxed text-sm sm:text-base">
                 <p className="text-base sm:text-lg font-normal text-brand-charcoal border-l-2 border-brand-gold pl-4">
-                  Acharya Dharmikshree is a renowned astrologer from a family that has been practising these arts for generations. He is also a spiritual guru offering guidance to seekers worldwide.
+                  Dharmikshree is a 13th-generation Vedic Astrologer, Vastu Consultant, and Spiritual Guide, carrying forward a family legacy of more than 300 years of ancient wisdom and spiritual practice.
                 </p>
                 <p>
-                  Specializing in authentic Vedic astrology, Kundali analysis, face reading (Samudrik Shastra), spiritual mentorship, Vastu consultation, and relationship counselling, he offers practical solutions and deep karmic clarity.
+                  His approach brings together Vedic Astrology, Vastu Shastra, spiritual wisdom, and modern-day practical guidance, helping individuals, families, entrepreneurs, and business leaders gain greater clarity in important areas of life and decision-making.
                 </p>
-                <p className="italic font-serif text-brand-bronze text-base">
-                  &ldquo;A path is aligned through ancient astrological wisdom, spiritual intent, and conscious action.&rdquo;
+                <p>
+                  Through consultations, spiritual mentoring, and public platforms, Dharmikshree works with people across India and internationally, with a vision of making timeless Indian wisdom relevant and practical for today’s generation.
                 </p>
+                <p>
+                  Beyond consultation, he is passionate about social and spiritual initiatives, including education, children’s development, Gau Seva, temple initiatives, and community welfare.
+                </p>
+                <div className="pt-6 border-t border-brand-gold/15 mt-6">
+                  <p className="italic font-serif text-brand-gold text-lg sm:text-xl leading-relaxed">
+                    &ldquo;Ancient Wisdom. Modern Relevance. Meaningful Transformation.&rdquo;
+                  </p>
+                  <span className="text-xs uppercase tracking-[0.2em] text-brand-bronze font-medium block mt-2">
+                    &mdash; Dharmikshree
+                  </span>
+                </div>
               </div>
             </motion.div>
 
@@ -192,7 +308,7 @@ export default function Home() {
               className="relative aspect-[3/4] w-full max-w-md mx-auto overflow-hidden rounded-sm border border-brand-gold/15 order-1 lg:order-2 shadow-xl"
             >
               <Image
-                src="/assets/dharmik_shree_real.jpg"
+                src="/assets/dharmik_about.jpg"
                 alt="Dharmik Shree Portrait"
                 fill
                 sizes="(max-width: 768px) 100vw, 448px"
@@ -221,13 +337,14 @@ export default function Home() {
               {...fadeInUp}
               className="font-serif text-3xl sm:text-5xl font-light tracking-wide leading-tight"
             >
-              Wisdom Beyond Prediction
+              Ancient Wisdom. Modern Relevance. <br />
+              <span className="italic font-normal text-brand-gold">Meaningful Transformation.</span>
             </motion.h2>
             <motion.p
               {...fadeInUp}
               className="text-brand-ivory/70 font-light leading-relaxed max-w-2xl mx-auto text-sm sm:text-base"
             >
-              Modern life is saturated with noise. Dharmik Shree guides you to filter the chaos,
+              Modern life is saturated with noise. Dharmikshree guides you to filter the chaos,
               understand the spiritual architecture of your environment (Vastu), align your life principles (Dharma),
               and build structural balance that sustains success.
             </motion.p>
@@ -284,13 +401,20 @@ export default function Home() {
                     index % 2 === 1 ? "lg:order-2 lg:pl-12" : "lg:pr-12"
                   }`}
                 >
-                  <span className="font-serif text-brand-gold text-lg italic font-normal">
-                    {service.subtitle}
-                  </span>
+                  <div className="flex flex-wrap items-center justify-between gap-4">
+                    <span className="font-serif text-brand-gold text-lg italic font-normal">
+                      {service.subtitle}
+                    </span>
+                    {service.price && (
+                      <span className="text-[10px] uppercase tracking-wider bg-brand-gold/10 text-brand-gold font-semibold px-3 py-1 rounded-sm border border-brand-gold/20">
+                        Dakshina: {service.price}
+                      </span>
+                    )}
+                  </div>
                   <h3 className="font-serif text-2xl sm:text-3xl font-light text-brand-charcoal tracking-wide">
                     {service.title}
                   </h3>
-                  <p className="text-brand-charcoal/70 font-light leading-relaxed text-sm sm:text-base">
+                  <p className="text-brand-charcoal/70 font-light leading-relaxed text-sm sm:text-base whitespace-pre-line">
                     {service.description}
                   </p>
                   <a
@@ -302,17 +426,29 @@ export default function Home() {
                 </div>
 
                 <div
-                  className={`lg:col-span-6 relative aspect-[16/10] w-full overflow-hidden rounded-sm border border-brand-gold/10 shadow-lg ${
+                  className={`lg:col-span-6 flex justify-center items-center w-full ${
                     index % 2 === 1 ? "lg:order-1" : ""
                   }`}
                 >
-                  <Image
-                    src={service.image}
-                    alt={service.title}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 640px"
-                    className="object-cover object-center scale-100 hover:scale-105 transition-transform duration-700"
-                  />
+                  {service.videoUrl ? (
+                    <div className="relative w-full max-w-[320px] aspect-[9/16] overflow-hidden rounded-md border border-brand-gold/20 shadow-2xl bg-brand-charcoal">
+                      <AutoplayVideo
+                        src={service.videoUrl}
+                        title={service.title}
+                        placeholderImage={service.image}
+                      />
+                    </div>
+                  ) : (
+                    <div className="relative aspect-[16/10] w-full overflow-hidden rounded-sm border border-brand-gold/10 shadow-lg">
+                      <Image
+                        src={service.image}
+                        alt={service.title}
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 640px"
+                        className="object-cover object-center scale-100 hover:scale-105 transition-transform duration-700"
+                      />
+                    </div>
+                  )}
                 </div>
               </motion.div>
             ))}
@@ -539,17 +675,18 @@ export default function Home() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Person",
-            "name": "Dharmik Shree",
+            "name": "Dharmikshree",
             "url": "https://www.dharmikshree.org",
             "image": "https://www.dharmikshree.org/assets/dharmik_shree_real.jpg",
-            "description": "Revered Spiritual Mentor, Vedic Guide, and Teacher for leaders, entrepreneurs, and families.",
-            "jobTitle": "Spiritual Mentor & Vedic Guide",
+            "description": "Dharmikshree is a 13th-generation Vedic Astrologer, Vastu Consultant, and Spiritual Guide, carrying forward a family legacy of more than 300 years of ancient wisdom and spiritual practice.",
+            "jobTitle": "13th-generation Vedic Astrologer, Vastu Consultant & Spiritual Guide",
             "knowsAbout": [
-              "Vedic Wisdom",
+              "Vedic Astrology",
+              "Vastu Shastra",
               "Spiritual Mentorship",
-              "Vastu Shastra Guidance",
               "Garbh Sanskar",
-              "Astrology Consultation",
+              "Kundali Reading",
+              "Vedic Wisdom",
               "Ancient Indian Philosophy"
             ]
           })
