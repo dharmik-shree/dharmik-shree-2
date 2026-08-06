@@ -39,6 +39,8 @@ async function getAccessToken() {
   return cachedToken;
 }
 
+const apiCache = new Map<string, { data: any; time: number }>();
+
 export async function GET(request: Request) {
   const clientId = process.env.PROKERALA_CLIENT_ID;
   const clientSecret = process.env.PROKERALA_CLIENT_SECRET;
@@ -58,6 +60,12 @@ export async function GET(request: Request) {
   const zodiac = searchParams.get("zodiac")?.toLowerCase() || "aries";
 
   const location = `${lat},${lng}`;
+  const cacheKey = `${tool}:${datetime}:${location}:${zodiac}`;
+
+  const cached = apiCache.get(cacheKey);
+  if (cached && Date.now() - cached.time < 3600 * 1000) {
+    return NextResponse.json(cached.data);
+  }
 
   try {
     const token = await getAccessToken();
@@ -75,23 +83,26 @@ export async function GET(request: Request) {
       params.append("datetime", datetime);
       params.append("sign", zodiac);
     } else if (tool === "rasi-chart") {
-      endpoint = "https://api.prokerala.com/v2/astrology/kundli/chart";
+      endpoint = "https://api.prokerala.com/v2/astrology/chart";
       params.append("ayanamsa", "1");
       params.append("datetime", datetime);
       params.append("coordinates", location);
       params.append("chart_type", "rasi");
+      params.append("chart_style", "north-indian");
     } else if (tool === "navamsa-chart") {
-      endpoint = "https://api.prokerala.com/v2/astrology/kundli/chart";
+      endpoint = "https://api.prokerala.com/v2/astrology/chart";
       params.append("ayanamsa", "1");
       params.append("datetime", datetime);
       params.append("coordinates", location);
       params.append("chart_type", "navamsa");
+      params.append("chart_style", "north-indian");
     } else if (tool === "chalit-chart") {
-      endpoint = "https://api.prokerala.com/v2/astrology/kundli/chart";
+      endpoint = "https://api.prokerala.com/v2/astrology/chart";
       params.append("ayanamsa", "1");
       params.append("datetime", datetime);
       params.append("coordinates", location);
       params.append("chart_type", "chalit");
+      params.append("chart_style", "north-indian");
     } else if (tool === "kundali-details") {
       // General planet positions & details endpoint
       endpoint = "https://api.prokerala.com/v2/astrology/kundli";
@@ -150,6 +161,7 @@ export async function GET(request: Request) {
           if (retryData.data) {
             retryData.sandbox = true;
           }
+          apiCache.set(cacheKey, { data: retryData, time: Date.now() });
           return NextResponse.json(retryData);
         }
       }
@@ -161,6 +173,7 @@ export async function GET(request: Request) {
     }
 
     const data = await apiRes.json();
+    apiCache.set(cacheKey, { data, time: Date.now() });
     return NextResponse.json(data);
   } catch (error: any) {
     console.error("Prokerala API Route error:", error);

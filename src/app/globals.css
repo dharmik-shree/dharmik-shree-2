@@ -146,3 +146,45 @@ body::before {
   color: #1A1A1A;
   font-weight: 600;
 }
+
+/* Print styles for clean Kundali PDF output */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+  }
+
+  body::before {
+    display: none !important;
+  }
+
+  header,
+  footer,
+  nav,
+  button,
+  .no-print {
+    display: none !important;
+  }
+
+  .custom-scrollbar {
+    max-height: none !important;
+    overflow: visible !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+
+  #printable-kundali-report {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .page-break {
+    page-break-before: always !important;
+    break-before: page !important;
+  }
+}
+
