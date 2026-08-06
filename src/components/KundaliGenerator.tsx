@@ -57,6 +57,7 @@ export default function KundaliGenerator() {
       birthPlace: formData.birthPlace,
       latitude: formData.latitude,
       longitude: formData.longitude,
+      lan: formData.language === "hindi" ? "hi" : "en",
     });
 
     window.location.href = `/tools/kundali-view?${query.toString()}`;
