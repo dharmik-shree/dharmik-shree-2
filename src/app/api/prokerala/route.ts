@@ -86,9 +86,34 @@ export async function GET(request: Request) {
       params.append("datetime", datetime);
       params.append("coordinates", location);
       params.append("chart_type", "navamsa");
+    } else if (tool === "chalit-chart") {
+      endpoint = "https://api.prokerala.com/v2/astrology/kundli/chart";
+      params.append("ayanamsa", "1");
+      params.append("datetime", datetime);
+      params.append("coordinates", location);
+      params.append("chart_type", "chalit");
     } else if (tool === "kundali-details") {
       // General planet positions & details endpoint
       endpoint = "https://api.prokerala.com/v2/astrology/kundli";
+      params.append("ayanamsa", "1");
+      params.append("datetime", datetime);
+      params.append("coordinates", location);
+    } else if (tool === "mangal-dosha") {
+      endpoint = "https://api.prokerala.com/v2/astrology/mangal-dosha";
+      params.append("ayanamsa", "1");
+      params.append("datetime", datetime);
+      params.append("coordinates", location);
+    } else if (tool === "sade-sati") {
+      endpoint = "https://api.prokerala.com/v2/astrology/sade-sati";
+      params.append("ayanamsa", "1");
+      params.append("datetime", datetime);
+      params.append("coordinates", location);
+    } else if (tool === "kaal-sarp-dosha") {
+      endpoint = "https://api.prokerala.com/v2/astrology/kaal-sarp-dosha";
+      params.append("datetime", datetime);
+      params.append("coordinates", location);
+    } else if (tool === "vimshottari-dasha") {
+      endpoint = "https://api.prokerala.com/v2/astrology/vimshottari-dasha";
       params.append("ayanamsa", "1");
       params.append("datetime", datetime);
       params.append("coordinates", location);
