@@ -74,6 +74,24 @@ export async function GET(request: Request) {
       endpoint = "https://api.prokerala.com/v2/horoscope/daily";
       params.append("datetime", datetime);
       params.append("sign", zodiac);
+    } else if (tool === "rasi-chart") {
+      endpoint = "https://api.prokerala.com/v2/astrology/kundli/chart";
+      params.append("ayanamsa", "1");
+      params.append("datetime", datetime);
+      params.append("coordinates", location);
+      params.append("chart_type", "rasi");
+    } else if (tool === "navamsa-chart") {
+      endpoint = "https://api.prokerala.com/v2/astrology/kundli/chart";
+      params.append("ayanamsa", "1");
+      params.append("datetime", datetime);
+      params.append("coordinates", location);
+      params.append("chart_type", "navamsa");
+    } else if (tool === "kundali-details") {
+      // General planet positions & details endpoint
+      endpoint = "https://api.prokerala.com/v2/astrology/kundli";
+      params.append("ayanamsa", "1");
+      params.append("datetime", datetime);
+      params.append("coordinates", location);
     } else {
       return NextResponse.json({ error: "Unsupported tool type" }, { status: 400 });
     }

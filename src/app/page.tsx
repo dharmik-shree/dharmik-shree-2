@@ -7,6 +7,7 @@ import { ArrowDown, Mail, Phone, ExternalLink } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { blogPosts } from "@/data/blogs";
+import KundaliGenerator from "@/components/KundaliGenerator";
 
 interface AutoplayVideoProps {
   src: string;
@@ -452,6 +453,23 @@ export default function Home() {
                 </div>
               </motion.div>
             ))}
+          </div>
+        </section>
+
+        {/* Generate Free Kundali Section */}
+        <section id="free-kundali" className="py-24 md:py-36 px-6 md:px-12 bg-brand-charcoal text-brand-ivory relative overflow-hidden">
+          <div className="absolute left-0 bottom-0 w-96 h-96 bg-brand-gold/5 rounded-full blur-3xl pointer-events-none" />
+          <div className="max-w-7xl mx-auto space-y-12 relative z-10">
+            <div className="text-center space-y-4">
+              <span className="text-xs uppercase tracking-[0.25em] text-brand-gold font-medium block">
+                Vedic Astro Calculator
+              </span>
+              <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-light tracking-wide">
+                Generate Free Kundali By Dharmik Shree
+              </h2>
+              <div className="w-16 h-px bg-brand-gold mx-auto mt-6" />
+            </div>
+            <KundaliGenerator />
           </div>
         </section>
 
