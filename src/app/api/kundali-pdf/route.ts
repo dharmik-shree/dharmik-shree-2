@@ -159,7 +159,7 @@ export async function POST(request: Request) {
       }
     };
 
-    const res = await fetch("https://api.prokerala.com/v2/report/personal-reading/instant", {
+    let res = await fetch("https://api.prokerala.com/v2/report/personal-reading/instant", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -167,6 +167,43 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify(prokeralaPayload)
     });
+
+    // Auto-detect sandbox restriction and retry with Jan 1st if required by sandbox mode
+    if (!res.ok) {
+      const errText = await res.text();
+      if (errText.includes("sandbox") || errText.includes("January 1st")) {
+        prokeralaPayload.input.datetime = `${year}-01-01T12:00:00+05:30`;
+        res = await fetch("https://api.prokerala.com/v2/report/personal-reading/instant", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(prokeralaPayload)
+        });
+      } else {
+        // Parse error text if not sandbox
+        let errJson: any = null;
+        try {
+          errJson = JSON.parse(errText);
+        } catch (e) {}
+
+        const detailMsg =
+          errJson?.errors?.[0]?.detail ||
+          errText ||
+          "Prokerala PDF generation failed";
+
+        return NextResponse.json(
+          {
+            provider: "prokerala",
+            status: "error",
+            error: detailMsg,
+            details: errJson || errText
+          },
+          { status: res.status }
+        );
+      }
+    }
 
     const contentType = res.headers.get("content-type") || "";
 
