@@ -24,14 +24,14 @@ const RASHI_OPTIONS = [
 ];
 
 const SERVICE_OPTIONS = [
-  { key: "divine_consultation", label: "Divine Consultation (Horoscope & Face Reading)", dakshina: "₹9,900" },
-  { key: "kundali_matching", label: "Kundali Matching & Gun Milan", dakshina: "₹5,100" },
-  { key: "vastu_residential", label: "Residential Vastu Shastra Audit", dakshina: "₹15,000" },
-  { key: "vastu_commercial", label: "Commercial Vastu Shastra Audit", dakshina: "₹25,000" },
-  { key: "gemstone_consultation", label: "Gemstone Recommendation & Muhurat", dakshina: "₹3,500" },
-  { key: "annual_horoscope", label: "Annual Varshphal & Dasha Analysis", dakshina: "₹7,500" },
-  { key: "mahapuja_booking", label: "Special Puja & Vedic Anushthan", dakshina: "₹11,000" },
-  { key: "numerology_report", label: "Name & Business Numerology", dakshina: "₹4,500" },
+  { key: "divine_consultation", label: "Divine Consultation (Horoscope & Face Reading)" },
+  { key: "kundali_matching", label: "Kundali Matching & Gun Milan" },
+  { key: "vastu_residential", label: "Residential Vastu Shastra Audit" },
+  { key: "vastu_commercial", label: "Commercial Vastu Shastra Audit" },
+  { key: "gemstone_consultation", label: "Gemstone Recommendation & Muhurat" },
+  { key: "annual_horoscope", label: "Annual Varshphal & Dasha Analysis" },
+  { key: "mahapuja_booking", label: "Special Puja & Vedic Anushthan" },
+  { key: "numerology_report", label: "Name & Business Numerology" },
 ];
 
 export default function BookingForm({ onSuccess, defaultService = "divine_consultation" }: BookingFormProps) {
@@ -122,7 +122,7 @@ export default function BookingForm({ onSuccess, defaultService = "divine_consul
     setIsSubmitting(true);
 
     try {
-      const crmApiUrl = process.env.NEXT_PUBLIC_CRM_API_URL || "http://localhost:3000/api/leads/public-enquiry";
+      const crmApiUrl = "/api/leads/public-enquiry";
 
       // Clean phone number format
       let formattedPhone = formData.phone.replace(/\D/g, "");
@@ -199,13 +199,9 @@ export default function BookingForm({ onSuccess, defaultService = "divine_consul
             <span className="text-brand-ivory/50">Selected Service:</span>
             <span className="font-medium text-brand-gold">{selectedServiceObj?.label}</span>
           </div>
-          <div className="flex justify-between border-b border-brand-gold/10 pb-2">
+          <div className="flex justify-between">
             <span className="text-brand-ivory/50">Consultation Mode:</span>
             <span className="font-medium text-brand-ivory uppercase">{formData.consultation_mode === "offline" ? "Offline (In-Person)" : "Online (Zoom / Meet)"}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-brand-ivory/50">Dakshina:</span>
-            <span className="font-medium text-brand-gold">{selectedServiceObj?.dakshina}</span>
           </div>
         </div>
 
@@ -318,7 +314,7 @@ export default function BookingForm({ onSuccess, defaultService = "divine_consul
               >
                 {SERVICE_OPTIONS.map((s) => (
                   <option key={s.key} value={s.key} className="bg-brand-charcoal text-brand-ivory">
-                    {s.label} ({s.dakshina})
+                    {s.label}
                   </option>
                 ))}
               </select>
@@ -345,7 +341,7 @@ export default function BookingForm({ onSuccess, defaultService = "divine_consul
                     onChange={(e) => setFormData({ ...formData, consultation_mode: e.target.value })}
                     className="sr-only"
                   />
-                  💻 Online (Zoom / Meet)
+                  Online (Zoom / Meet)
                 </label>
 
                 <label
@@ -363,7 +359,7 @@ export default function BookingForm({ onSuccess, defaultService = "divine_consul
                     onChange={(e) => setFormData({ ...formData, consultation_mode: e.target.value })}
                     className="sr-only"
                   />
-                  🛕 Offline (In-Person)
+                  Offline (In-Person)
                 </label>
               </div>
             </div>
