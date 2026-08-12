@@ -56,24 +56,13 @@ export async function POST(request: Request) {
       process.env.SUPABASE_SERVICE_ROLE_KEY ||
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5leXRhYnlreWdlZGF5ZWx5aHZpIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NjQxOTg3OSwiZXhwIjoyMTAxOTk1ODc5fQ.igCM1BKA-aSD_2vU0hf5dxMMevuywQ7zibGvqY34wJU";
 
-    const newLeadRecord = {
+    // Core lead fields guaranteed to exist in base schema
+    const coreLeadRecord: Record<string, any> = {
       full_name: body.full_name,
       phone: body.phone,
       whatsapp: body.phone,
-      email: body.email || null,
       city: body.city,
-      address: body.address || null,
-      pincode: body.pincode || null,
       country: "India",
-      date_of_birth: body.date_of_birth || null,
-      time_of_birth: body.time_of_birth || null,
-      birth_place: body.birth_place || null,
-      gender: body.gender || null,
-      relation: body.relation || "self",
-      marital_status: body.marital_status || null,
-      gotra: body.gotra || null,
-      rashi: body.rashi || null,
-      occupation: body.occupation || null,
       lead_source: body.lead_source || "website",
       lead_temperature: "warm",
       service_interest: body.service_interest || "divine_consultation",
@@ -85,13 +74,30 @@ export async function POST(request: Request) {
       amount_paid: 0,
       rescheduled: false,
       reschedule_count: 0,
-      internal_notes: body.message ? `Website Note: ${body.message}` : null,
       tags: ["Website Lead"],
       is_converted: false,
       updated_at: new Date().toISOString(),
     };
 
-    const dbRes = await fetch(`${supabaseUrl}/rest/v1/leads`, {
+    if (body.email) coreLeadRecord.email = body.email;
+    if (body.message) coreLeadRecord.internal_notes = `Website Note: ${body.message}`;
+
+    // Extended Kundali profiling fields (included only if truthy)
+    const extendedRecord = { ...coreLeadRecord };
+    if (body.date_of_birth) extendedRecord.date_of_birth = body.date_of_birth;
+    if (body.time_of_birth) extendedRecord.time_of_birth = body.time_of_birth;
+    if (body.birth_place) extendedRecord.birth_place = body.birth_place;
+    if (body.gender) extendedRecord.gender = body.gender;
+    if (body.relation) extendedRecord.relation = body.relation;
+    if (body.address) extendedRecord.address = body.address;
+    if (body.pincode) extendedRecord.pincode = body.pincode;
+    if (body.marital_status) extendedRecord.marital_status = body.marital_status;
+    if (body.gotra) extendedRecord.gotra = body.gotra;
+    if (body.rashi) extendedRecord.rashi = body.rashi;
+    if (body.occupation) extendedRecord.occupation = body.occupation;
+    if (body.kundali_notes) extendedRecord.kundali_notes = body.kundali_notes;
+
+    let dbRes = await fetch(`${supabaseUrl}/rest/v1/leads`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -99,12 +105,26 @@ export async function POST(request: Request) {
         Authorization: `Bearer ${supabaseServiceKey}`,
         Prefer: "return=representation",
       },
-      body: JSON.stringify([newLeadRecord]),
+      body: JSON.stringify([extendedRecord]),
     });
+
+    // If extended columns cause schema cache error (e.g. PGRST204), fallback to core fields
+    if (!dbRes.ok) {
+      dbRes = await fetch(`${supabaseUrl}/rest/v1/leads`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          apikey: supabaseServiceKey,
+          Authorization: `Bearer ${supabaseServiceKey}`,
+          Prefer: "return=representation",
+        },
+        body: JSON.stringify([coreLeadRecord]),
+      });
+    }
 
     if (!dbRes.ok) {
       const errText = await dbRes.text();
-      throw new Error(`Database fallback error: ${errText}`);
+      throw new Error(`Database error: ${errText}`);
     }
 
     const insertedRows = await dbRes.json();
