@@ -36,6 +36,14 @@ export const metadata: Metadata = {
     "Dharmik Shree",
   ],
   authors: [{ name: "Dharmikshree" }],
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon.png", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-icon.png",
+  },
   openGraph: {
     title: "Dharmikshree | Astrologer, Vastu Consultant & Spiritual Guide",
     description:
