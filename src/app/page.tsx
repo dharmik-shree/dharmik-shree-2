@@ -8,6 +8,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { blogPosts } from "@/data/blogs";
 import KundaliGenerator from "@/components/KundaliGenerator";
+import BookingForm from "@/components/BookingForm";
 
 interface AutoplayVideoProps {
   src: string;
@@ -660,28 +661,9 @@ export default function Home() {
 
             <motion.div
               {...fadeInUp}
-              className="flex flex-col sm:flex-row gap-4 justify-center pt-6 max-w-lg mx-auto"
+              className="pt-6 max-w-2xl mx-auto text-left"
             >
-              <a
-                href="mailto:dharmikshree.connect@gmail.com?subject=Consultation%20Request"
-                className="flex items-center justify-center gap-3 text-xs uppercase tracking-widest bg-brand-gold text-brand-charcoal hover:bg-brand-gold-hover hover:text-brand-charcoal px-6 py-4 font-semibold transition-all duration-300 rounded-sm shadow-md cursor-pointer"
-              >
-                <Mail size={16} /> Book Session
-              </a>
-              <a
-                href="https://wa.me/919979729764"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-3 text-xs uppercase tracking-widest border border-brand-ivory/30 text-brand-ivory hover:border-brand-gold hover:text-brand-gold px-6 py-4 font-semibold transition-all duration-300 rounded-sm cursor-pointer"
-              >
-                WhatsApp
-              </a>
-              <a
-                href="tel:+919979729764"
-                className="flex items-center justify-center gap-3 text-xs uppercase tracking-widest border border-brand-ivory/30 text-brand-ivory hover:border-brand-gold hover:text-brand-gold px-6 py-4 font-semibold transition-all duration-300 rounded-sm cursor-pointer"
-              >
-                Call Directly
-              </a>
+              <BookingForm />
             </motion.div>
           </div>
         </section>

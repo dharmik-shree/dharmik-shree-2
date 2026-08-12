@@ -121,7 +121,11 @@ export async function POST(request: Request) {
       });
 
       const data = await response.json();
-      return NextResponse.json({ provider: "divine", ...data });
+      let errorMessage = undefined;
+      if (data.status === "error" || !response.ok) {
+        errorMessage = typeof data.error === "string" ? data.error : data.error?.details || data.message || "Divine API error";
+      }
+      return NextResponse.json({ provider: "divine", ...data, error: errorMessage || data.error });
     }
 
     // ----------------------------------------------------

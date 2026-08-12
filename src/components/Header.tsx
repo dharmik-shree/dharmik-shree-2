@@ -3,10 +3,12 @@
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
+import BookingModal from "./BookingModal";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -54,67 +56,76 @@ export default function Header() {
   ];
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${headerBgClass}`}>
-      <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
-        {/* Brand Logo */}
-        <a
-          href="#"
-          className={`font-serif text-xl md:text-2xl tracking-[0.2em] uppercase transition-colors duration-300 ${logoColorClass}`}
-        >
-          Dharmik Shree
-        </a>
-
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex space-x-8 items-center">
-          {navItems.map((item) => (
-            <a
-              key={item.name}
-              href={item.href}
-              className={`text-xs uppercase tracking-[0.25em] transition-colors duration-300 ${navItemColorClass}`}
-            >
-              {item.name}
-            </a>
-          ))}
+    <>
+      <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${headerBgClass}`}>
+        <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
+          {/* Brand Logo */}
           <a
-            href="/#journey"
-            className={`text-xs uppercase tracking-[0.2em] px-6 py-2.5 border transition-all duration-300 rounded-sm ${buttonClass}`}
+            href="/"
+            className={`font-serif text-xl md:text-2xl tracking-[0.2em] uppercase transition-colors duration-300 ${logoColorClass}`}
           >
-            Book Consultation
+            Dharmik Shree
           </a>
-        </nav>
 
-        {/* Mobile Toggle */}
-        <button
-          className={`md:hidden transition-colors duration-300 ${toggleColorClass}`}
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          aria-label="Toggle navigation menu"
-        >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-brand-ivory border-b border-brand-gold/10 py-6 px-8 flex flex-col space-y-4 shadow-lg animate-fade-in">
-          {navItems.map((item) => (
-            <a
-              key={item.name}
-              href={item.href}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="text-sm uppercase tracking-widest text-brand-charcoal py-2 border-b border-brand-charcoal/5"
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex space-x-8 items-center">
+            {navItems.map((item) => (
+              <a
+                key={item.name}
+                href={item.href}
+                className={`text-xs uppercase tracking-[0.25em] transition-colors duration-300 ${navItemColorClass}`}
+              >
+                {item.name}
+              </a>
+            ))}
+            <button
+              type="button"
+              onClick={() => setIsBookingOpen(true)}
+              className={`text-xs uppercase tracking-[0.2em] px-6 py-2.5 border transition-all duration-300 rounded-sm cursor-pointer ${buttonClass}`}
             >
-              {item.name}
-            </a>
-          ))}
-          <a
-            href="/#journey"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="text-center text-sm uppercase tracking-widest px-6 py-3 border border-brand-gold bg-brand-gold text-brand-ivory transition-colors duration-300 rounded-sm mt-4"
+              Book Consultation
+            </button>
+          </nav>
+
+          {/* Mobile Toggle */}
+          <button
+            className={`md:hidden transition-colors duration-300 ${toggleColorClass}`}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle navigation menu"
           >
-            Book Consultation
-          </a>
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
-      )}
-    </header>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden absolute top-full left-0 right-0 bg-brand-ivory border-b border-brand-gold/10 py-6 px-8 flex flex-col space-y-4 shadow-lg animate-fade-in">
+            {navItems.map((item) => (
+              <a
+                key={item.name}
+                href={item.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-sm uppercase tracking-widest text-brand-charcoal py-2 border-b border-brand-charcoal/5"
+              >
+                {item.name}
+              </a>
+            ))}
+            <button
+              type="button"
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                setIsBookingOpen(true);
+              }}
+              className="text-center text-sm uppercase tracking-widest px-6 py-3 border border-brand-gold bg-brand-gold text-brand-ivory transition-colors duration-300 rounded-sm mt-4 cursor-pointer"
+            >
+              Book Consultation
+            </button>
+          </div>
+        )}
+      </header>
+
+      {/* Global Booking Modal */}
+      <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
+    </>
   );
 }

@@ -58,7 +58,11 @@ function KundaliViewContent() {
       if (res.ok && json.status === "success" && json.data) {
         setPdfData(json.data);
       } else {
-        setError(json.error || json.message || "Failed to generate Kundali PDF report");
+        const errMsg =
+          typeof json.error === "string"
+            ? json.error
+            : json.error?.details || json.error?.message || json.message || "Failed to generate Kundali PDF report";
+        setError(errMsg);
       }
     } catch (err: any) {
       console.error("Error generating Kundali PDF:", err);
