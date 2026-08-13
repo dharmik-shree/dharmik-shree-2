@@ -1,0 +1,26 @@
+{
+  "birthDetails": {
+    "fullName": "Binju",
+    "gender": "male",
+    "dateOfBirth": "1994-09-11",
+    "timeOfBirth": "18:05:00",
+    "birthPlace": "Mehsana, Gujarat, India",
+    "latitude": 23.5833,
+    "longitude": 72.3667,
+    "timezone": 5.5,
+    "timezoneName": "Asia/Kolkata",
+    "language": "hi"
+  },
+  "expectedCalculations": {
+    "lagnaSign": "Aquarius",
+    "lagnaSignHi": "कुंभ",
+    "moonSign": "Scorpio",
+    "moonSignHi": "वृश्चिक",
+    "sunSign": "Leo",
+    "sunSignHi": "सिंह",
+    "nakshatra": "Anuradha",
+    "nakshatraPada": 3,
+    "manglikSeverity": "medium",
+    "sadeSatiInEffect": true
+  }
+}
