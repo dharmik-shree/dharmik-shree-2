@@ -1,26 +1,20 @@
 // HTML & Puppeteer PDF Renderer Engine
+// Uses pure string template generators to ensure 100% Vercel & Turbopack build compatibility.
 
-import React from "react";
-import ReactDOMServer from "react-dom/server";
 import { CanonicalKundali } from "../types";
-import ReportCover from "@/components/kundali/pdf/ReportCover";
-import TableOfContentsPage from "@/components/kundali/pdf/TableOfContentsPage";
-import BasicDetailsPage from "@/components/kundali/pdf/BasicDetailsPage";
-import PlanetaryPositionsPage from "@/components/kundali/pdf/PlanetaryPositionsPage";
-import LagnaReportPage from "@/components/kundali/pdf/LagnaReportPage";
-import DoshasPage from "@/components/kundali/pdf/DoshasPage";
-import RemediesPage from "@/components/kundali/pdf/RemediesPage";
+import {
+  renderCoverPageHtml,
+  renderTableOfContentsHtml,
+  renderBasicDetailsHtml,
+  renderPlanetaryPositionsHtml,
+} from "./htmlTemplates";
 
 export function compileReportHtml(data: CanonicalKundali): string {
-  // Render pages to HTML strings
   const pages = [
-    ReactDOMServer.renderToStaticMarkup(React.createElement(ReportCover, { data })),
-    ReactDOMServer.renderToStaticMarkup(React.createElement(TableOfContentsPage)),
-    ReactDOMServer.renderToStaticMarkup(React.createElement(BasicDetailsPage, { data })),
-    ReactDOMServer.renderToStaticMarkup(React.createElement(PlanetaryPositionsPage, { data })),
-    ReactDOMServer.renderToStaticMarkup(React.createElement(LagnaReportPage, { data })),
-    ReactDOMServer.renderToStaticMarkup(React.createElement(DoshasPage, { data })),
-    ReactDOMServer.renderToStaticMarkup(React.createElement(RemediesPage, { data })),
+    renderCoverPageHtml(data),
+    renderTableOfContentsHtml(),
+    renderBasicDetailsHtml(data),
+    renderPlanetaryPositionsHtml(data),
   ];
 
   return `
@@ -29,8 +23,6 @@ export function compileReportHtml(data: CanonicalKundali): string {
     <head>
       <meta charset="UTF-8">
       <title>Dharmik Shree Premium Kundali Report</title>
-      <script src="https://cdn.tailwindcss.com"></script>
-      <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Hind:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
       <style>
         @page {
           size: A4 portrait;
@@ -41,7 +33,7 @@ export function compileReportHtml(data: CanonicalKundali): string {
           padding: 0;
           background-color: #FFFFFF;
           -webkit-print-color-adjust: exact;
-          font-family: 'Hind', 'Inter', sans-serif;
+          font-family: sans-serif;
         }
         .pdf-page {
           width: 794px;
