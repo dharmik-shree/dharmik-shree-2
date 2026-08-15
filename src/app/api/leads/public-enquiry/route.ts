@@ -51,10 +51,12 @@ export async function POST(request: Request) {
     }
 
     // Direct Supabase REST API Fallback if CRM dev server is offline/unreachable
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://neytabykygedayelyhvi.supabase.co";
-    const supabaseServiceKey =
-      process.env.SUPABASE_SERVICE_ROLE_KEY ||
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5leXRhYnlreWdlZGF5ZWx5aHZpIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NjQxOTg3OSwiZXhwIjoyMTAxOTk1ODc5fQ.igCM1BKA-aSD_2vU0hf5dxMMevuywQ7zibGvqY34wJU";
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+    if (!supabaseUrl || !supabaseServiceKey) {
+      throw new Error("Supabase environment variables (NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY) are not configured.");
+    }
 
     // Core lead fields guaranteed to exist in base schema
     const coreLeadRecord: Record<string, any> = {

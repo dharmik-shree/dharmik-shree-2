@@ -2,8 +2,12 @@ import { NextResponse } from "next/server";
 import { generateKundaliPdfBuffer } from "@/lib/kundali/renderer/pdfCompiler";
 import { CanonicalKundali } from "@/lib/kundali/types";
 
-// In-memory report jobs store
-const reportJobs = new Map<string, { status: "processing" | "completed" | "error"; progress: number; pdfBase64?: string; error?: string }>();
+declare global {
+  var _reportJobsMap: Map<string, { status: "processing" | "completed" | "error"; progress: number; pdfBase64?: string; error?: string }> | undefined;
+}
+
+const reportJobs = globalThis._reportJobsMap || new Map();
+globalThis._reportJobsMap = reportJobs;
 
 export async function POST(request: Request) {
   try {
@@ -51,4 +55,6 @@ export async function POST(request: Request) {
   }
 }
 
-export { reportJobs };
+export function getReportJob(id: string) {
+  return reportJobs.get(id);
+}
