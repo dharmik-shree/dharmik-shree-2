@@ -323,10 +323,7 @@ export default function KundaliForm() {
           </div>
 
           {/* Submit Action Button */}
-          <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-amber-500/20">
-            <div className="text-xs text-amber-100/50 flex items-center gap-2">
-              <Globe size={14} className="text-amber-400" /> Vedic Astrology Engine (Basic Horoscope Report)
-            </div>
+          <div className="pt-4 flex flex-col sm:flex-row items-center justify-end gap-4 border-t border-amber-500/20">
 
             <button
               type="submit"
