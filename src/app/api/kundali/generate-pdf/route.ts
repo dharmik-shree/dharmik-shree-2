@@ -1,0 +1,250 @@
+import { NextResponse } from "next/server";
+import { ASTROLOGY_COMPANY_CONFIG } from "@/constants/astrologyCompanyConfig";
+import { resolveLocation } from "@/lib/kundali/locationResolver";
+import { saveKundaliReportPending, updateKundaliReportStatus } from "@/lib/supabaseKundali";
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+    const {
+      name,
+      gender = "male",
+      day,
+      month,
+      year,
+      hour,
+      minute,
+      place,
+      lat,
+      lon,
+      tzone,
+      language = "hi",
+    } = body;
+
+    // ----------------------------------------------------
+    // 1. STRICT VALIDATION TO SAVE API & DB CALLS
+    // ----------------------------------------------------
+    const trimmedName = typeof name === "string" ? name.trim() : "";
+    if (!trimmedName) {
+      return NextResponse.json(
+        { status: "error", message: "कृपया अपना पूरा नाम दर्ज करें (Name is required)." },
+        { status: 400 }
+      );
+    }
+
+    const numDay = parseInt(String(day), 10);
+    const numMonth = parseInt(String(month), 10);
+    const numYear = parseInt(String(year), 10);
+
+    if (isNaN(numDay) || numDay < 1 || numDay > 31) {
+      return NextResponse.json(
+        { status: "error", message: "अमान्य जन्म तिथि (Invalid Day: 1-31)." },
+        { status: 400 }
+      );
+    }
+
+    if (isNaN(numMonth) || numMonth < 1 || numMonth > 12) {
+      return NextResponse.json(
+        { status: "error", message: "अमान्य जन्म माह (Invalid Month: 1-12)." },
+        { status: 400 }
+      );
+    }
+
+    if (isNaN(numYear) || numYear < 1900 || numYear > 2100) {
+      return NextResponse.json(
+        { status: "error", message: "अमान्य जन्म वर्ष (Invalid Year: 1900-2100)." },
+        { status: 400 }
+      );
+    }
+
+    // Validate calendar date
+    const testDate = new Date(numYear, numMonth - 1, numDay);
+    if (
+      testDate.getFullYear() !== numYear ||
+      testDate.getMonth() !== numMonth - 1 ||
+      testDate.getDate() !== numDay
+    ) {
+      return NextResponse.json(
+        { status: "error", message: "अमान्य जन्म तिथि दर्ज की गई है (Invalid calendar date)." },
+        { status: 400 }
+      );
+    }
+
+    const numHour = parseInt(String(hour ?? "0"), 10);
+    const numMin = parseInt(String(minute ?? "0"), 10);
+
+    if (isNaN(numHour) || numHour < 0 || numHour > 23) {
+      return NextResponse.json(
+        { status: "error", message: "अमान्य जन्म घंटा (Invalid Hour: 0-23)." },
+        { status: 400 }
+      );
+    }
+
+    if (isNaN(numMin) || numMin < 0 || numMin > 59) {
+      return NextResponse.json(
+        { status: "error", message: "अमान्य जन्म मिनट (Invalid Minute: 0-59)." },
+        { status: 400 }
+      );
+    }
+
+    const trimmedPlace = typeof place === "string" ? place.trim() : "";
+    if (!trimmedPlace) {
+      return NextResponse.json(
+        { status: "error", message: "कृपया जन्म स्थान दर्ज करें (Birth place is required)." },
+        { status: 400 }
+      );
+    }
+
+    const validGender = gender === "female" ? "female" : "male";
+    const validLang = language === "en" ? "en" : "hi";
+
+    // Resolve location & timezone
+    const resolvedLoc = await resolveLocation(
+      trimmedPlace,
+      lat !== undefined && lat !== null && lat !== "" ? parseFloat(String(lat)) : undefined,
+      lon !== undefined && lon !== null && lon !== "" ? parseFloat(String(lon)) : undefined,
+      tzone !== undefined && tzone !== null && tzone !== "" ? parseFloat(String(tzone)) : undefined
+    );
+
+    const finalLat = resolvedLoc.latitude;
+    const finalLon = resolvedLoc.longitude;
+    const finalTzone = resolvedLoc.timezone ?? 5.5;
+    const finalPlace = resolvedLoc.placeName || trimmedPlace;
+
+    // Get IP and User-Agent for audit tracking
+    const ipAddress = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || undefined;
+    const userAgent = request.headers.get("user-agent") || undefined;
+
+    // ----------------------------------------------------
+    // STEP 1: SAVE USER DATA INTO OUR SERVER FIRST
+    // ----------------------------------------------------
+    const dbRecordId = await saveKundaliReportPending({
+      name: trimmedName,
+      gender: validGender,
+      day: numDay,
+      month: numMonth,
+      year: numYear,
+      hour: numHour,
+      minute: numMin,
+      place: finalPlace,
+      lat: finalLat,
+      lon: finalLon,
+      tzone: finalTzone,
+      language: validLang,
+      ip_address: ipAddress,
+      user_agent: userAgent,
+    });
+
+    // ----------------------------------------------------
+    // STEP 2: CALL ASTROLOGY API (pdf/basic_horoscope_pdf)
+    // ----------------------------------------------------
+    const apiKey = process.env.ASTROLOGY_API_KEY;
+    const userId = process.env.ASTROLOGY_USER_ID;
+
+    if (!apiKey) {
+      const errMsg = "Astrology API key is missing in server environment (.env.local)";
+      await updateKundaliReportStatus(dbRecordId, "failed", undefined, errMsg);
+      return NextResponse.json(
+        { status: "error", message: errMsg },
+        { status: 500 }
+      );
+    }
+
+    // Prepare auth header
+    let authHeaderValue = "";
+    if (userId) {
+      authHeaderValue = `Basic ${Buffer.from(`${userId}:${apiKey}`).toString("base64")}`;
+    } else if (apiKey.startsWith("Basic ")) {
+      authHeaderValue = apiKey;
+    } else {
+      authHeaderValue = `Basic ${apiKey}`;
+    }
+
+    const payload = {
+      day: numDay,
+      lat: finalLat,
+      lon: finalLon,
+      min: numMin,
+      hour: numHour,
+      name: trimmedName,
+      year: numYear,
+      month: numMonth,
+      place: finalPlace,
+      tzone: finalTzone,
+      gender: validGender,
+      language: validLang,
+      ...ASTROLOGY_COMPANY_CONFIG,
+    };
+
+    let apiRes = await fetch("https://pdf.astrologyapi.com/v1/basic_horoscope_pdf", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authHeaderValue,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    let apiData = await apiRes.json().catch(() => null);
+
+    // Fallback retry if auth format without base64 or with base64 needs adjustment
+    if (!apiRes.ok || !apiData?.status || !apiData?.pdf_url) {
+      if (!userId && !apiKey.startsWith("Basic ")) {
+        const altAuth = `Basic ${Buffer.from(apiKey).toString("base64")}`;
+        const retryRes = await fetch("https://pdf.astrologyapi.com/v1/basic_horoscope_pdf", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: altAuth,
+          },
+          body: JSON.stringify(payload),
+        });
+        const retryData = await retryRes.json().catch(() => null);
+        if (retryRes.ok && (retryData?.status || retryData?.pdf_url)) {
+          apiRes = retryRes;
+          apiData = retryData;
+        }
+      }
+    }
+
+    if (!apiRes.ok || (!apiData?.status && !apiData?.pdf_url)) {
+      const errMsg = apiData?.msg || apiData?.message || "Astrology API request failed to generate PDF";
+      console.error("Astrology API error response:", apiData);
+      await updateKundaliReportStatus(dbRecordId, "failed", undefined, errMsg);
+
+      return NextResponse.json(
+        {
+          status: "error",
+          message: errMsg,
+          details: apiData,
+        },
+        { status: 500 }
+      );
+    }
+
+    const pdfUrl = apiData.pdf_url;
+
+    // Update Supabase DB status to completed with pdf_url
+    await updateKundaliReportStatus(dbRecordId, "completed", pdfUrl);
+
+    return NextResponse.json({
+      status: "success",
+      dbRecordId,
+      pdfUrl,
+      payload: {
+        name: trimmedName,
+        gender: validGender,
+        dob: `${numYear}-${String(numMonth).padStart(2, "0")}-${String(numDay).padStart(2, "0")}`,
+        time: `${String(numHour).padStart(2, "0")}:${String(numMin).padStart(2, "0")}`,
+        place: finalPlace,
+        language: validLang,
+      },
+    });
+  } catch (error: any) {
+    console.error("Generate Kundali PDF Route Error:", error);
+    return NextResponse.json(
+      { status: "error", message: error.message || "Internal server error" },
+      { status: 500 }
+    );
+  }
+}

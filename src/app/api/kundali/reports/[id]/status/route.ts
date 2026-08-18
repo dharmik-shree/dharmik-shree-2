@@ -1,19 +1,35 @@
 import { NextResponse } from "next/server";
-import { getReportJob } from "@/app/api/kundali/generate-report/route";
+import { supabaseAdmin } from "@/lib/supabaseKundali";
 
 export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params;
-  const job = getReportJob(id);
 
-  if (!job) {
-    return NextResponse.json({ error: "Report job not found" }, { status: 404 });
+  if (!id) {
+    return NextResponse.json({ error: "Missing report ID" }, { status: 400 });
   }
 
-  return NextResponse.json({
-    reportId: id,
-    status: job.status,
-    progress: job.progress,
-    pdfDataUrl: job.pdfBase64,
-    error: job.error,
-  });
+  if (supabaseAdmin) {
+    try {
+      const { data, error } = await supabaseAdmin
+        .from("kundali_reports")
+        .select("id, status, pdf_url, error_message, name, created_at")
+        .eq("id", id)
+        .single();
+
+      if (!error && data) {
+        return NextResponse.json({
+          reportId: data.id,
+          status: data.status,
+          pdfUrl: data.pdf_url,
+          pdfDataUrl: data.pdf_url,
+          error: data.error_message,
+          name: data.name,
+        });
+      }
+    } catch (err) {
+      console.error("Supabase status lookup error:", err);
+    }
+  }
+
+  return NextResponse.json({ error: "Report not found" }, { status: 404 });
 }
