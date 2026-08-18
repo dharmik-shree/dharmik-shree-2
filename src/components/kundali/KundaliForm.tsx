@@ -300,7 +300,6 @@ export default function KundaliForm() {
                 required
                 value={formData.birthPlace}
                 onChange={handleChange}
-                placeholder="उदा. Sanosara, Gujarat, India"
                 className="w-full bg-black/60 border border-amber-500/30 rounded py-3 px-4 text-sm text-amber-100 focus:border-amber-400 outline-none transition-all"
               />
             </div>
