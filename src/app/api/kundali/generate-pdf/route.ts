@@ -150,14 +150,18 @@ export async function POST(request: Request) {
       );
     }
 
-    // Prepare auth header
-    let authHeaderValue = "";
+    // Build headers to support both Access Tokens (x-astrologyapi-key) and User ID + API Key (Basic Auth)
+    const apiHeaders: Record<string, string> = {
+      "Content-Type": "application/json",
+      "x-astrologyapi-key": apiKey,
+    };
+
     if (userId) {
-      authHeaderValue = `Basic ${Buffer.from(`${userId}:${apiKey}`).toString("base64")}`;
+      apiHeaders["Authorization"] = `Basic ${Buffer.from(`${userId}:${apiKey}`).toString("base64")}`;
     } else if (apiKey.startsWith("Basic ")) {
-      authHeaderValue = apiKey;
+      apiHeaders["Authorization"] = apiKey;
     } else {
-      authHeaderValue = `Basic ${apiKey}`;
+      apiHeaders["Authorization"] = `Bearer ${apiKey}`;
     }
 
     const payload = {
@@ -178,32 +182,28 @@ export async function POST(request: Request) {
 
     let apiRes = await fetch("https://pdf.astrologyapi.com/v1/basic_horoscope_pdf", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: authHeaderValue,
-      },
+      headers: apiHeaders,
       body: JSON.stringify(payload),
     });
 
     let apiData = await apiRes.json().catch(() => null);
 
-    // Fallback retry if auth format without base64 or with base64 needs adjustment
+    // Fallback retry with Basic auth if needed
     if (!apiRes.ok || !apiData?.status || !apiData?.pdf_url) {
-      if (!userId && !apiKey.startsWith("Basic ")) {
-        const altAuth = `Basic ${Buffer.from(apiKey).toString("base64")}`;
-        const retryRes = await fetch("https://pdf.astrologyapi.com/v1/basic_horoscope_pdf", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: altAuth,
-          },
-          body: JSON.stringify(payload),
-        });
-        const retryData = await retryRes.json().catch(() => null);
-        if (retryRes.ok && (retryData?.status || retryData?.pdf_url)) {
-          apiRes = retryRes;
-          apiData = retryData;
-        }
+      const altAuth = `Basic ${Buffer.from(`${apiKey}:`).toString("base64")}`;
+      const retryRes = await fetch("https://pdf.astrologyapi.com/v1/basic_horoscope_pdf", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-astrologyapi-key": apiKey,
+          Authorization: altAuth,
+        },
+        body: JSON.stringify(payload),
+      });
+      const retryData = await retryRes.json().catch(() => null);
+      if (retryRes.ok && (retryData?.status || retryData?.pdf_url)) {
+        apiRes = retryRes;
+        apiData = retryData;
       }
     }
 
