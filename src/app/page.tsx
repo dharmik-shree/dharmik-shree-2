@@ -9,6 +9,9 @@ import Footer from "@/components/Footer";
 import { blogPosts } from "@/data/blogs";
 import KundaliGenerator from "@/components/KundaliGenerator";
 import BookingForm from "@/components/BookingForm";
+import PujaBannerSlider from "@/components/pujas/PujaBannerSlider";
+import { FALLBACK_PUJAS, getAllPujas } from "@/lib/pujaData";
+import { Puja } from "@/types/puja";
 
 interface AutoplayVideoProps {
   src: string;
@@ -79,6 +82,22 @@ function AutoplayVideo({ src, title, placeholderImage }: AutoplayVideoProps) {
 }
 
 export default function Home() {
+  const [pujas, setPujas] = useState<Puja[]>(FALLBACK_PUJAS);
+
+  useEffect(() => {
+    async function loadPujas() {
+      try {
+        const livePujas = await getAllPujas();
+        if (livePujas && livePujas.length > 0) {
+          setPujas(livePujas);
+        }
+      } catch (err) {
+        console.warn("Error loading pujas:", err);
+      }
+    }
+    loadPujas();
+  }, []);
+
   const fadeInUp = {
     initial: { opacity: 0, y: 30 },
     whileInView: { opacity: 1, y: 0 },
@@ -268,6 +287,9 @@ export default function Home() {
             </motion.div>
           </div>
         </section>
+
+        {/* Upcoming Featured Puja Announcement Slider */}
+        <PujaBannerSlider pujas={pujas} />
 
         {/* About Section */}
         <section id="about" className="py-24 md:py-36 px-6 md:px-12 max-w-7xl mx-auto">
