@@ -296,10 +296,10 @@ export default function PujaDetailClient({ puja }: PujaDetailClientProps) {
               key={tab.key}
               type="button"
               onClick={() => setActiveTab(tab.key as any)}
-              className={`pb-3 px-1 border-b-2 transition-colors cursor-pointer ${
+              className={`px-3.5 py-1.5 text-sm md:text-base font-serif transition-all cursor-pointer rounded-sm ${
                 activeTab === tab.key
-                  ? "border-[#E56910] text-[#E56910] font-bold"
-                  : "border-transparent text-brand-charcoal/70 hover:text-brand-charcoal"
+                  ? "border border-[#E56910] text-[#E56910] font-bold shadow-xs bg-white/70"
+                  : "border border-transparent text-brand-charcoal/70 hover:text-brand-charcoal hover:bg-black/5"
               }`}
             >
               {tab.label}
@@ -366,29 +366,49 @@ export default function PujaDetailClient({ puja }: PujaDetailClientProps) {
 
         {/* PROCESS TAB */}
         {activeTab === "process" && (
-          <div className="space-y-6 max-w-4xl">
-            <h2 className="font-serif text-2xl md:text-3xl text-brand-charcoal font-semibold">
+          <div className="space-y-6 max-w-4xl text-left">
+            <h2 className="font-serif text-3xl sm:text-4xl text-[#1E1E1E] font-normal tracking-tight">
               How the Puja is Performed Step-by-Step
             </h2>
 
-            <div className="space-y-4">
+            <div className="space-y-4 pt-1">
               {(puja.process_steps && puja.process_steps.length > 0
                 ? puja.process_steps
                 : [
-                    { step: 1, title: "Sankalp Chanting", description: "Purohits recite your Gotra and Name." },
-                    { step: 2, title: "Vedic Ritual & Havan", description: "Purifying offerings made into the sacred fire." },
-                    { step: 3, title: "WhatsApp Updates & Prasad", description: "Video recordings and consecrated Prasad dispatched." },
+                    {
+                      step: 1,
+                      title: "Devotee Sankalp",
+                      description: "Purohit recites your Name, Gotra, and wish before the sacred Falgu river altar.",
+                    },
+                    {
+                      step: 2,
+                      title: "Pind Daan & Til Tarpana",
+                      description: "Authentic Vedic offerings of Barley, Til, Honey, and Milk honoring your lineage.",
+                    },
+                    {
+                      step: 3,
+                      title: "Maha Havan & Pitru Gayatri",
+                      description: "Purifying sacred fire ceremony reciting 1008 Pitru Gayatri Mantras.",
+                    },
+                    {
+                      step: 4,
+                      title: "WhatsApp Video & Prasad Dispatch",
+                      description: "Full HD video recording shared on your WhatsApp and consecrated Prasad dispatched.",
+                    },
                   ]
               ).map((stepItem, idx) => (
-                <div key={idx} className="bg-white border border-brand-gold/20 rounded-lg p-5 flex items-start gap-4 shadow-sm">
-                  <div className="w-9 h-9 rounded-full bg-brand-gold text-brand-charcoal font-bold text-sm flex items-center justify-center shrink-0">
+                <div
+                  key={idx}
+                  className="bg-white rounded-2xl p-6 sm:p-7 shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-[#EBE7DF] flex items-start gap-5 sm:gap-6 transition-all hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)]"
+                >
+                  <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#B38E46] text-[#241B0E] font-bold text-base sm:text-lg flex items-center justify-center shrink-0 shadow-xs mt-0.5 font-serif">
                     {stepItem.step || idx + 1}
                   </div>
                   <div className="space-y-1">
-                    <h4 className="font-serif text-lg font-bold text-brand-charcoal">
+                    <h4 className="font-serif text-lg sm:text-xl font-bold text-[#1E1E1E] leading-snug">
                       {stepItem.title}
                     </h4>
-                    <p className="text-xs sm:text-sm text-brand-charcoal/75 font-light leading-relaxed">
+                    <p className="text-sm sm:text-base text-[#524D47] font-light leading-relaxed mt-1.5">
                       {stepItem.description}
                     </p>
                   </div>
@@ -488,28 +508,47 @@ export default function PujaDetailClient({ puja }: PujaDetailClientProps) {
 
         {/* FAQS TAB */}
         {activeTab === "faqs" && (
-          <div className="space-y-4 max-w-4xl">
-            <h2 className="font-serif text-2xl md:text-3xl text-brand-charcoal font-semibold mb-4">
+          <div className="space-y-6 max-w-4xl text-left">
+            <h2 className="font-serif text-3xl sm:text-4xl text-[#1E1E1E] font-normal tracking-tight">
               Frequently Asked Questions
             </h2>
 
-            {(puja.faqs && puja.faqs.length > 0
-              ? puja.faqs
-              : [
-                  { question: "Do I need to attend physically?", answer: "No, qualified Purohits perform the Sankalp on your behalf with complete video proof." },
-                  { question: "What if I do not know my Gotra?", answer: "Panditji will take the universal Kashyap Gotra Sankalp on your behalf." },
-                ]
-            ).map((faq, idx) => (
-              <div key={idx} className="bg-white border border-brand-gold/20 rounded-lg p-5 space-y-2 shadow-sm">
-                <h4 className="font-serif text-base sm:text-lg font-bold text-brand-charcoal flex items-center gap-2">
-                  <HelpCircle size={18} className="text-brand-gold shrink-0" />
-                  <span>{faq.question}</span>
-                </h4>
-                <p className="text-xs sm:text-sm text-brand-charcoal/75 font-light leading-relaxed pl-6">
-                  {faq.answer}
-                </p>
-              </div>
-            ))}
+            <div className="space-y-4 pt-1">
+              {(puja.faqs && puja.faqs.length > 0
+                ? puja.faqs
+                : [
+                    {
+                      question: "Do I need to be physically present at Gaya?",
+                      answer: "No. The Puja is performed on your behalf by authenticated Purohits using your Gotra and Name. You can watch live or view the complete uncut video recording sent to your WhatsApp.",
+                    },
+                    {
+                      question: "What if I do not know my Gotra?",
+                      answer: "In Sanatan Dharma traditions, if you do not know your Gotra, Panditji will take the universal Kashyap Gotra Sankalp on your behalf, which is fully valid and auspicious.",
+                    },
+                    {
+                      question: "When and how will I receive the meeting link?",
+                      answer: "On the morning of the Puja day, our team will send the personalized joining link to your registered WhatsApp number and Email.",
+                    },
+                  ]
+              ).map((faq, idx) => (
+                <div
+                  key={idx}
+                  className="bg-white rounded-2xl p-6 sm:p-7 shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-[#EBE7DF] space-y-2.5 transition-all hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)] text-left"
+                >
+                  <div className="flex items-start gap-2.5">
+                    <span className="w-5 h-5 rounded-full border-[1.5px] border-[#B88E4B] text-[#B88E4B] flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
+                      ?
+                    </span>
+                    <h4 className="font-serif text-base sm:text-lg font-bold text-[#1E1E1E] leading-snug">
+                      {faq.question}
+                    </h4>
+                  </div>
+                  <p className="text-sm sm:text-base text-[#524D47] font-light leading-relaxed pl-7 sm:pl-7.5">
+                    {faq.answer}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>

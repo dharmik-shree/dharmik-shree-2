@@ -85,6 +85,10 @@ export const FALLBACK_PUJAS: Puja[] = [
         question: 'When and how will I receive the meeting link?',
         answer: 'On the morning of the Puja day, our team will send the personalized joining link to your registered WhatsApp number and Email.',
       },
+      {
+        question: 'How will I receive the consecrated Prasad?',
+        answer: 'The consecrated Prasad and Aashirwad Box will be packed in a sacred sanctified container and dispatched via premium courier directly to your home address.',
+      },
     ],
     display_order: 1,
     packages: [
