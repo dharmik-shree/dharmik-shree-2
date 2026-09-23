@@ -47,14 +47,20 @@ function calculateTimeLeft(endDateStr: string): TimeLeft {
 }
 
 export default function PujaDetailClient({ puja }: PujaDetailClientProps) {
+  const FALLBACK_IMAGE = "/assets/dharmik_about.jpg";
   const [activeTab, setActiveTab] = useState<"about" | "benefits" | "process" | "packages" | "faqs">("about");
-  const [activeImage, setActiveImage] = useState(puja.banner_image_url);
+  const [activeImage, setActiveImage] = useState(puja.banner_image_url || FALLBACK_IMAGE);
+  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft(puja.enrollment_end_date));
 
   // Modal States
   const [isPackageSelectorOpen, setIsPackageSelectorOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<PujaPackage | null>(null);
   const [isEnrollmentOpen, setIsEnrollmentOpen] = useState(false);
+
+  useEffect(() => {
+    setActiveImage(puja.banner_image_url || FALLBACK_IMAGE);
+  }, [puja.banner_image_url]);
 
   useEffect(() => {
     setTimeLeft(calculateTimeLeft(puja.enrollment_end_date));
@@ -64,7 +70,8 @@ export default function PujaDetailClient({ puja }: PujaDetailClientProps) {
     return () => clearInterval(timer);
   }, [puja.enrollment_end_date]);
 
-  const allImages = [puja.banner_image_url, ...(puja.gallery_images || [])];
+  const rawImages = [puja.banner_image_url, ...(puja.gallery_images || [])].filter(Boolean);
+  const allImages = Array.from(new Set(rawImages));
   const packages = puja.packages || [];
 
   const handleSelectPackageFromModal = (pkg: PujaPackage) => {
@@ -106,14 +113,16 @@ export default function PujaDetailClient({ puja }: PujaDetailClientProps) {
         <div className="lg:col-span-6 space-y-4">
           <div className="relative aspect-[4/3] w-full rounded-xl overflow-hidden border border-brand-gold/30 shadow-xl bg-brand-charcoal">
             <Image
-              src={activeImage}
+              src={failedImages[activeImage] ? FALLBACK_IMAGE : activeImage}
               alt={puja.title}
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover object-center transition-all duration-500"
               priority
+              unoptimized
+              onError={() => setFailedImages((prev) => ({ ...prev, [activeImage]: true }))}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-brand-charcoal/70 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-brand-charcoal/70 via-transparent to-transparent pointer-events-none" />
 
             {/* Live streaming indicator badge */}
             <div className="absolute top-4 left-4 bg-brand-charcoal/90 backdrop-blur-md px-3 py-1.5 rounded-sm border border-brand-gold/40 flex items-center gap-2 shadow-md">
@@ -135,19 +144,33 @@ export default function PujaDetailClient({ puja }: PujaDetailClientProps) {
 
           {/* Thumbnails */}
           {allImages.length > 1 && (
-            <div className="flex gap-3 overflow-x-auto pb-2">
-              {allImages.map((img, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => setActiveImage(img)}
-                  className={`relative w-20 h-16 rounded-md overflow-hidden border-2 shrink-0 transition-all ${
-                    activeImage === img ? "border-brand-gold ring-2 ring-brand-gold/40" : "border-gray-200 opacity-70 hover:opacity-100"
-                  }`}
-                >
-                  <Image src={img} alt={`Thumbnail ${idx + 1}`} fill sizes="80px" className="object-cover" />
-                </button>
-              ))}
+            <div className="flex gap-3 overflow-x-auto pb-2 pt-1">
+              {allImages.map((img, idx) => {
+                const isSelected = activeImage === img;
+                const src = failedImages[img] ? FALLBACK_IMAGE : img;
+                return (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setActiveImage(img)}
+                    className={`relative w-20 h-16 rounded-md overflow-hidden border-2 shrink-0 transition-all cursor-pointer ${
+                      isSelected
+                        ? "border-[#E56910] ring-2 ring-[#E56910]/40 scale-105 shadow-md"
+                        : "border-gray-200 opacity-75 hover:opacity-100 hover:border-gray-300"
+                    }`}
+                  >
+                    <Image
+                      src={src}
+                      alt={`Thumbnail ${idx + 1}`}
+                      fill
+                      sizes="80px"
+                      className="object-cover"
+                      unoptimized
+                      onError={() => setFailedImages((prev) => ({ ...prev, [img]: true }))}
+                    />
+                  </button>
+                );
+              })}
             </div>
           )}
 

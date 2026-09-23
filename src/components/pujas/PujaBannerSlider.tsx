@@ -141,6 +141,7 @@ export default function PujaBannerSlider({ pujas }: PujaBannerSliderProps) {
                   sizes="(max-width: 1024px) 100vw, 40vw"
                   className="object-cover object-center transform scale-105 hover:scale-100 transition-transform duration-700"
                   priority
+                  unoptimized
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-brand-charcoal via-brand-charcoal/30 to-transparent" />
                 <div className="absolute top-4 left-4 bg-brand-charcoal/90 backdrop-blur-md px-3 py-1.5 rounded-sm border border-brand-gold/40 flex items-center gap-2">
