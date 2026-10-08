@@ -15,26 +15,26 @@ export const supabaseClient = supabaseKey
 export const FALLBACK_PUJAS: Puja[] = [
   {
     id: '11111111-1111-1111-1111-111111111111',
-    title: 'Sarva Pitru Shanti Mahapuja at Gaya Ji',
-    slug: 'sarva-pitru-shanti-puja-gaya',
-    subtitle: 'Ancestral peace, Pitru Dosh Nivaran and divine blessings across seven generations',
-    short_description: 'Perform sacred Pitru Tarpana & Pind Daan at the holy Vishnu Pad in Gaya. Free your lineage from ancestral afflictions and invite generational peace, health & prosperity.',
-    description: 'According to traditional Sanatan beliefs, Gaya is the ultimate sacred shrine for Pitru Mukti. Performing this Mahapuja with your Gotra and family names recited by Vedic Pandits brings complete Shanti to departed ancestors. Devotees will receive live streaming access, an uncut video recording of the ritual, and consecrated Tirth Prasad delivered directly to their doorstep.',
+    title: 'Sarva Pitru Shanti Mahapuja on Holy Tapi River, Surat',
+    slug: 'sarva-pitru-shanti-puja-surat',
+    subtitle: 'Ancestral peace, Pitru Dosh Nivaran and divine blessings on the sacred banks of Suryaputri River Tapi',
+    short_description: 'Perform sacred Pitru Tarpana & Pind Daan on the holy banks of River Tapi in Surat, Gujarat. Free your lineage from ancestral afflictions and invite generational peace, health & prosperity.',
+    description: 'According to sacred Puranic scriptures, River Tapi (Suryaputri - daughter of the Sun God) holds immense spiritual sanctity for Moksha and Pitru Mukti. Performing this Mahapuja with your Gotra and family names recited by Vedic Pandits brings complete Shanti to departed ancestors. Devotees will receive live streaming access, an uncut video recording of the ritual, and consecrated Tirth Prasad delivered directly to their doorstep.',
     banner_image_url: 'https://images.unsplash.com/photo-1544816155-12df9643f363?w=1200&q=80',
     gallery_images: [
       'https://images.unsplash.com/photo-1544816155-12df9643f363?w=800&q=80',
       'https://images.unsplash.com/photo-1609342122563-a43ac8917a3a?w=800&q=80',
       'https://images.unsplash.com/photo-1519817650390-64a93db51149?w=800&q=80',
     ],
-    event_date: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
-    enrollment_end_date: new Date(Date.now() + (2 * 24 + 18) * 60 * 60 * 1000).toISOString(),
-    location_name: 'Vishnu Pad Mandir, Gaya Ji, Bihar',
-    tithi_details: 'Bhadrapada Shukla Purnima (Pitru Paksha Aarambh)',
+    event_date: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
+    enrollment_end_date: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000).toISOString(),
+    location_name: 'Holy Tapi River Ghat, Surat, Gujarat',
+    tithi_details: 'Bhadrapada Shukla Purnima / Amavasya',
     starting_price: 851,
     puja_status: 'upcoming',
     is_featured: true,
     is_active: true,
-    meeting_link: 'https://meet.google.com/dharmik-gaya-puja',
+    meeting_link: 'https://meet.google.com/dharmik-surat-puja',
     benefits: [
       {
         title: 'Pitru Dosh Nivaran',
@@ -46,7 +46,7 @@ export const FALLBACK_PUJAS: Puja[] = [
       },
       {
         title: 'Doorstep Tirth Prasad Delivery',
-        description: 'Receive an authentic Aashirwad Box with sacred Falgu-Ganga Jal, Til, and Temple Prasad.',
+        description: 'Receive an authentic Aashirwad Box with sacred Tapi Jal, Til, and Temple Prasad.',
       },
       {
         title: 'Personalized Vedic Sankalp',
@@ -57,12 +57,12 @@ export const FALLBACK_PUJAS: Puja[] = [
       {
         step: 1,
         title: 'Devotee Sankalp',
-        description: 'Purohit recites your Name, Gotra, and wish before the sacred Falgu river altar.',
+        description: 'Purohit recites your Name, Gotra, and wish before the sacred River Tapi altar in Surat.',
       },
       {
         step: 2,
         title: 'Pind Daan & Til Tarpana',
-        description: 'Authentic Vedic offerings of Barley, Til, Honey, and Milk honoring your lineage.',
+        description: 'Authentic Vedic offerings of Barley, Til, Honey, and Milk honoring your lineage on holy Tapi ghats.',
       },
       {
         step: 3,
@@ -77,8 +77,12 @@ export const FALLBACK_PUJAS: Puja[] = [
     ],
     faqs: [
       {
-        question: 'Do I need to be physically present at Gaya?',
-        answer: 'No. The Puja is performed on your behalf by authenticated Purohits using your Gotra and Name. You can watch live or view the complete uncut video recording sent to your WhatsApp.',
+        question: 'Do I need to be physically present in Surat?',
+        answer: 'No. The Puja is performed on your behalf by authenticated Purohits on the sacred banks of River Tapi using your Gotra and Name. You can watch live or view the complete uncut video recording sent to your WhatsApp.',
+      },
+      {
+        question: 'What is the spiritual significance of River Tapi for Pitru Puja?',
+        answer: 'River Tapi is revered as Suryaputri (daughter of Lord Surya and Chhaya Devi). Sanatan scriptures state that performing Tarpana and Pind Daan on the holy banks of Tapi bestows swift liberation to ancestors and removes intense Pitru Dosh.',
       },
       {
         question: 'What if I do not know my Gotra?',
@@ -90,7 +94,7 @@ export const FALLBACK_PUJAS: Puja[] = [
       },
       {
         question: 'How will I receive the consecrated Prasad?',
-        answer: 'The consecrated Prasad and Aashirwad Box will be packed in a sacred sanctified container and dispatched via premium courier directly to your home address.',
+        answer: 'The consecrated Prasad and Aashirwad Box with holy Tapi Jal will be packed in a sacred sanctified container and dispatched via premium courier directly to your home address.',
       },
     ],
     display_order: 1,
@@ -168,7 +172,7 @@ export const FALLBACK_PUJAS: Puja[] = [
           'Up to 6 Family Members recited',
           'Pitru Tarpan & Sampoorna Havan',
           'Special Gau Grass & Anna Daan seva',
-          'Premium Aashirwad Box with Falgu Jal',
+          'Premium Aashirwad Box with Tapi Jal',
           'Full WhatsApp video & photos proof',
         ],
         display_order: 4,
@@ -389,16 +393,28 @@ export async function getPujaBySlug(slug: string): Promise<Puja | null> {
     return FALLBACK_PUJAS.find((p) => p.slug === slug) || null;
   }
 
+  const targetSlug = slug === 'sarva-pitru-shanti-puja-gaya' ? 'sarva-pitru-shanti-puja-surat' : slug;
+
   try {
-    const { data: puja, error } = await supabaseClient
+    let { data: puja, error } = await supabaseClient
       .from('pujas')
       .select('*')
-      .eq('slug', slug)
+      .eq('slug', targetSlug)
       .eq('is_active', true)
       .maybeSingle();
 
+    if (!puja && targetSlug !== slug) {
+      const res = await supabaseClient
+        .from('pujas')
+        .select('*')
+        .eq('slug', slug)
+        .eq('is_active', true)
+        .maybeSingle();
+      puja = res.data;
+    }
+
     if (error || !puja) {
-      return FALLBACK_PUJAS.find((p) => p.slug === slug) || null;
+      return FALLBACK_PUJAS.find((p) => p.slug === targetSlug || p.slug === slug) || null;
     }
 
     const { data: packages } = await supabaseClient

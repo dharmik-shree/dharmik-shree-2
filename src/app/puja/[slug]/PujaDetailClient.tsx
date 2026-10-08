@@ -405,7 +405,7 @@ export default function PujaDetailClient({ puja }: PujaDetailClientProps) {
                     {
                       step: 1,
                       title: "Devotee Sankalp",
-                      description: "Purohit recites your Name, Gotra, and wish before the sacred Falgu river altar.",
+                      description: "Purohit recites your Name, Gotra, and wish before the sacred River Tapi altar in Surat.",
                     },
                     {
                       step: 2,
@@ -545,8 +545,8 @@ export default function PujaDetailClient({ puja }: PujaDetailClientProps) {
                 ? puja.faqs
                 : [
                     {
-                      question: "Do I need to be physically present at Gaya?",
-                      answer: "No. The Puja is performed on your behalf by authenticated Purohits using your Gotra and Name. You can watch live or view the complete uncut video recording sent to your WhatsApp.",
+                      question: "Do I need to be physically present at the puja venue in Surat?",
+                      answer: "No. The Puja is performed on your behalf by authenticated Purohits on the holy banks of River Tapi using your Gotra and Name. You can watch live or view the complete uncut video recording sent to your WhatsApp.",
                     },
                     {
                       question: "What if I do not know my Gotra?",
