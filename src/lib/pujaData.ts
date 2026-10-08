@@ -2,7 +2,10 @@ import { Puja, PujaPackage, PujaEnrollmentPayload } from '@/types/puja';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://neytabykygedayelyhvi.supabase.co';
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+const supabaseKey =
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+  'sb_publishable_axC6g8xuf5pEjIrZ43zpaQ_c2JDd86s';
 
 export const supabaseClient = supabaseKey
   ? createClient(supabaseUrl, supabaseKey, { auth: { persistSession: false } })
@@ -280,6 +283,69 @@ export const FALLBACK_PUJAS: Puja[] = [
   },
 ];
 
+export function generateDefaultPackages(pujaId: string, startingPrice: number = 851): PujaPackage[] {
+  const basePrice = Math.max(501, Number(startingPrice) || 851);
+  return [
+    {
+      id: `${pujaId}-pkg-single`,
+      puja_id: pujaId,
+      name: 'Single Devotee Sankalp',
+      package_type: 'single',
+      max_persons: 1,
+      price: basePrice,
+      original_price: Math.round(basePrice * 1.4),
+      badge_text: undefined,
+      description: 'Personalized Vedic ritual with your Name and Gotra recitation.',
+      inclusions: [
+        '1 Person Name & Gotra recited',
+        'Vedic Sankalp & Ahuti',
+        'Live streaming access link',
+        'WhatsApp uncut video recording',
+      ],
+      display_order: 1,
+      is_active: true,
+    },
+    {
+      id: `${pujaId}-pkg-couple`,
+      puja_id: pujaId,
+      name: 'Couple / Dampati Sankalp',
+      package_type: 'couple',
+      max_persons: 2,
+      price: Math.round(basePrice * 1.5),
+      original_price: Math.round(basePrice * 2),
+      badge_text: 'Popular',
+      description: 'Joint Sankalp for Husband & Wife for mutual harmony and prosperity.',
+      inclusions: [
+        '2 Persons Names & Gotra recited',
+        'Joint Dampati Vedic Sankalp',
+        'Doorstep Tirth Prasad Delivery',
+        'Full WhatsApp HD video proof',
+      ],
+      display_order: 2,
+      is_active: true,
+    },
+    {
+      id: `${pujaId}-pkg-family`,
+      puja_id: pujaId,
+      name: 'Family Sampoorna Seva + Prasad',
+      package_type: 'group',
+      max_persons: 6,
+      price: Math.round(basePrice * 2.3),
+      original_price: Math.round(basePrice * 3.2),
+      badge_text: 'Best Value',
+      description: 'Complete family ritual with consecrated Prasad and Aashirwad Box sent to your home.',
+      inclusions: [
+        'Up to 6 Family Members recited',
+        'Full Maha Havan & Tarpana',
+        'Consecrated Aashirwad Prasad Box by courier',
+        'Full video proof & photo album',
+      ],
+      display_order: 3,
+      is_active: true,
+    },
+  ];
+}
+
 export async function getAllPujas(): Promise<Puja[]> {
   if (!supabaseClient) {
     return FALLBACK_PUJAS;
@@ -305,10 +371,13 @@ export async function getAllPujas(): Promise<Puja[]> {
       .eq('is_active', true)
       .order('display_order', { ascending: true });
 
-    return pujasData.map((puja) => ({
-      ...puja,
-      packages: (packagesData || []).filter((pkg) => pkg.puja_id === puja.id),
-    }));
+    return pujasData.map((puja) => {
+      const dbPkgs = (packagesData || []).filter((pkg) => pkg.puja_id === puja.id);
+      return {
+        ...puja,
+        packages: dbPkgs.length > 0 ? dbPkgs : generateDefaultPackages(puja.id, puja.starting_price),
+      };
+    });
   } catch (err) {
     console.warn('Error fetching pujas from Supabase, using fallback:', err);
     return FALLBACK_PUJAS;
@@ -339,9 +408,11 @@ export async function getPujaBySlug(slug: string): Promise<Puja | null> {
       .eq('is_active', true)
       .order('display_order', { ascending: true });
 
+    const dbPkgs = packages && packages.length > 0 ? packages : generateDefaultPackages(puja.id, puja.starting_price);
+
     return {
       ...puja,
-      packages: packages || [],
+      packages: dbPkgs,
     };
   } catch (err) {
     console.warn('Error fetching puja by slug, using fallback:', err);

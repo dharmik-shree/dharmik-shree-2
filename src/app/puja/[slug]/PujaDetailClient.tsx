@@ -19,6 +19,7 @@ import {
   Award,
 } from "lucide-react";
 import { Puja, PujaPackage } from "@/types/puja";
+import { generateDefaultPackages } from "@/lib/pujaData";
 import PujaPackageSelector from "@/components/pujas/PujaPackageSelector";
 import PujaEnrollmentModal from "@/components/pujas/PujaEnrollmentModal";
 
@@ -72,7 +73,10 @@ export default function PujaDetailClient({ puja }: PujaDetailClientProps) {
 
   const rawImages = [puja.banner_image_url, ...(puja.gallery_images || [])].filter(Boolean);
   const allImages = Array.from(new Set(rawImages));
-  const packages = puja.packages || [];
+  const packages =
+    puja.packages && puja.packages.length > 0
+      ? puja.packages
+      : generateDefaultPackages(puja.id, puja.starting_price);
 
   const handleSelectPackageFromModal = (pkg: PujaPackage) => {
     setSelectedPackage(pkg);
@@ -607,10 +611,10 @@ export default function PujaDetailClient({ puja }: PujaDetailClientProps) {
       />
 
       {/* 7. Devotee Enrollment Modal (Screenshot 2) */}
-      {selectedPackage && (
+      {(selectedPackage || packages[0]) && (
         <PujaEnrollmentModal
           puja={puja}
-          selectedPackage={selectedPackage}
+          selectedPackage={selectedPackage || packages[0]}
           isOpen={isEnrollmentOpen}
           onClose={() => setIsEnrollmentOpen(false)}
           onBackToPackages={() => {

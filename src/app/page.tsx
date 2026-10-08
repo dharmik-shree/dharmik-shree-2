@@ -87,6 +87,14 @@ export default function Home() {
   useEffect(() => {
     async function loadPujas() {
       try {
+        const res = await fetch("/api/pujas", { cache: "no-store" });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.pujas && data.pujas.length > 0) {
+            setPujas(data.pujas);
+            return;
+          }
+        }
         const livePujas = await getAllPujas();
         if (livePujas && livePujas.length > 0) {
           setPujas(livePujas);
