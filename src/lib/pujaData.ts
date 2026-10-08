@@ -388,14 +388,37 @@ export async function getAllPujas(): Promise<Puja[]> {
   }
 }
 
-export async function getPujaBySlug(slug: string): Promise<Puja | null> {
-  if (!supabaseClient) {
-    return FALLBACK_PUJAS.find((p) => p.slug === slug) || null;
+export async function getPujaBySlug(rawSlug: string): Promise<Puja | null> {
+  const cleanSlug = decodeURIComponent(rawSlug || '').trim().toLowerCase();
+  if (!cleanSlug) return null;
+
+  // Smart aliases for previous / common slugs
+  let targetSlug = cleanSlug;
+  if (
+    cleanSlug === 'sarva-pitru-shanti-puja-gaya' ||
+    cleanSlug === 'sarva-pitru-shanti-puja-surat-2yt7' ||
+    cleanSlug.includes('pitru') ||
+    cleanSlug.includes('tapi')
+  ) {
+    targetSlug = 'sarva-pitru-shanti-puja-surat';
+  } else if (
+    cleanSlug.includes('mrityunjaya') ||
+    cleanSlug.includes('trimbakeshwar') ||
+    cleanSlug.includes('rudrabhishek')
+  ) {
+    targetSlug = 'maha-mrityunjaya-rudrabhishek-trimbakeshwar';
   }
 
-  const targetSlug = slug === 'sarva-pitru-shanti-puja-gaya' ? 'sarva-pitru-shanti-puja-surat' : slug;
+  if (!supabaseClient) {
+    return (
+      FALLBACK_PUJAS.find((p) => p.slug === targetSlug || p.slug === cleanSlug) ||
+      FALLBACK_PUJAS[0] ||
+      null
+    );
+  }
 
   try {
+    // 1. Direct match on targetSlug
     let { data: puja, error } = await supabaseClient
       .from('pujas')
       .select('*')
@@ -403,18 +426,34 @@ export async function getPujaBySlug(slug: string): Promise<Puja | null> {
       .eq('is_active', true)
       .maybeSingle();
 
-    if (!puja && targetSlug !== slug) {
+    // 2. Direct match on cleanSlug if different
+    if (!puja && targetSlug !== cleanSlug) {
       const res = await supabaseClient
         .from('pujas')
         .select('*')
-        .eq('slug', slug)
+        .eq('slug', cleanSlug)
         .eq('is_active', true)
         .maybeSingle();
       puja = res.data;
     }
 
+    // 3. Partial ILIKE match if still not found
+    if (!puja) {
+      const firstKeyword = cleanSlug.split('-')[0];
+      if (firstKeyword && firstKeyword.length > 3) {
+        const res = await supabaseClient
+          .from('pujas')
+          .select('*')
+          .ilike('slug', `%${firstKeyword}%`)
+          .eq('is_active', true)
+          .limit(1)
+          .maybeSingle();
+        puja = res.data;
+      }
+    }
+
     if (error || !puja) {
-      return FALLBACK_PUJAS.find((p) => p.slug === targetSlug || p.slug === slug) || null;
+      return FALLBACK_PUJAS.find((p) => p.slug === targetSlug || p.slug === cleanSlug) || null;
     }
 
     const { data: packages } = await supabaseClient
@@ -432,7 +471,7 @@ export async function getPujaBySlug(slug: string): Promise<Puja | null> {
     };
   } catch (err) {
     console.warn('Error fetching puja by slug, using fallback:', err);
-    return FALLBACK_PUJAS.find((p) => p.slug === slug) || null;
+    return FALLBACK_PUJAS.find((p) => p.slug === targetSlug || p.slug === cleanSlug) || null;
   }
 }
 

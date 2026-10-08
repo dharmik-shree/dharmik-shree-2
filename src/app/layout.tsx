@@ -76,12 +76,74 @@ export default function RootLayout({
 }>) {
   const gaId = process.env.NEXT_PUBLIC_GA_ID || "G-HQ6T5KPYNV";
 
+  const globalEntitySchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://www.dharmikshree.org/#organization",
+        name: "Dharmik Shree",
+        url: "https://www.dharmikshree.org",
+        logo: "https://www.dharmikshree.org/icon-512.png",
+        founder: {
+          "@type": "Person",
+          "@id": "https://www.dharmikshree.org/#person",
+        },
+        sameAs: [
+          "https://www.instagram.com/astrologer_dharmikshree",
+          "https://www.youtube.com/@astrodharmikshreeguruji8646",
+          "https://www.linkedin.com/in/astrologer-dharmikshree-jani",
+        ],
+        contactPoint: {
+          "@type": "ContactPoint",
+          telephone: "+919173008182",
+          contactType: "customer service",
+          areaServed: ["IN", "US", "GB", "AE", "CA", "AU"],
+          availableLanguage: ["en", "hi", "gu"],
+        },
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.dharmikshree.org/#person",
+        name: "Acharya Dharmikshree",
+        alternateName: ["Dharmik Shree", "Dharmikshree Jani"],
+        jobTitle: "13th-Generation Vedic Astrologer & Vastu Consultant",
+        description:
+          "Carrying forward an unbroken 300+ year family lineage of Vedic astrology, business astrology, Vastu Shastra, and sacred rituals.",
+        url: "https://www.dharmikshree.org",
+        knowsAbout: [
+          "Vedic Astrology",
+          "Business Astrology",
+          "Business Name Suggestion and Numerology",
+          "Baby Name Suggestions (Vedic Namkaran Sanskar)",
+          "Baby Birth Date and Time Selection (Shubh Muhurat)",
+          "Vastu Shastra and Space Energy Alignment",
+          "Life and Family Consulting",
+          "Virtual Puja and E-Puja (River Tapi Surat, Kashi, Trimbakeshwar)",
+          "Kundali Milan and Gun Matching",
+          "Pitru Shanti Tarpana and Pind Daan",
+        ],
+        sameAs: [
+          "https://www.instagram.com/astrologer_dharmikshree",
+          "https://www.youtube.com/@astrodharmikshreeguruji8646",
+          "https://www.linkedin.com/in/astrologer-dharmikshree-jani",
+        ],
+      },
+    ],
+  };
+
   return (
     <html
       lang="en"
       className={`${cormorant.variable} ${inter.variable} scroll-smooth`}
       suppressHydrationWarning
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(globalEntitySchema) }}
+        />
+      </head>
       <body
         className="bg-brand-ivory text-brand-charcoal font-sans antialiased min-h-screen flex flex-col selection:bg-brand-gold/20"
         suppressHydrationWarning

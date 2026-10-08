@@ -25,13 +25,18 @@ const RASHI_OPTIONS = [
 
 const SERVICE_OPTIONS = [
   { key: "divine_consultation", label: "Divine Consultation (Horoscope & Face Reading)" },
-  { key: "kundali_matching", label: "Kundali Matching & Gun Milan" },
+  { key: "business_astrology", label: "Business Astrology & Corporate Mentorship" },
+  { key: "business_naming", label: "Business Name Suggestion & Numerology" },
+  { key: "baby_naming", label: "Baby Name Suggestion (Vedic Nakshatra Namkaran)" },
+  { key: "kundali_matching", label: "Kundali Matching & Relationship Guidance" },
+  { key: "family_consulting", label: "Life & Family Consulting (Mentorship)" },
   { key: "vastu_residential", label: "Residential Vastu Shastra Audit" },
   { key: "vastu_commercial", label: "Commercial Vastu Shastra Audit" },
+  { key: "virtual_puja", label: "Virtual Puja & E-Puja Seva" },
+  { key: "mahapuja_booking", label: "Special Vedic Puja & Anushthan" },
   { key: "gemstone_consultation", label: "Gemstone Recommendation & Muhurat" },
   { key: "annual_horoscope", label: "Annual Varshphal & Dasha Analysis" },
-  { key: "mahapuja_booking", label: "Special Puja & Vedic Anushthan" },
-  { key: "numerology_report", label: "Name & Business Numerology" },
+  { key: "numerology_report", label: "Personal & Business Numerology" },
 ];
 
 export default function BookingForm({ onSuccess, defaultService = "divine_consultation" }: BookingFormProps) {
